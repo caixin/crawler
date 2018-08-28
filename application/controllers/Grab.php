@@ -5,33 +5,41 @@ class Grab extends CI_Controller
 {
     public function __construct()
     {
-        parent::__construct();
-        
+		parent::__construct();
+		
+        set_time_limit(0);
 		$this->load->library('Simple_html_dom');
         $this->load->model('Bc_ettm_record_model', 'bc_ettm_record_db');
 	}
 
 	public function index()
 	{
-		//$this->happy10('hnkl10'); //湖南快10
-		//$this->happy10('tjkl10'); //天津快10
-
-		//$this->fast3('gxk3'); //廣西快3
-		//$this->fast3('shk3'); //上海快3
-		//$this->fast3('jsk3'); //江蘇快3
-
-		//$this->tat('xjssc'); //新疆時時彩
-		//$this->tat('cqssc'); //重慶時時彩
-		//$this->tat('tjssc'); //天津時時彩
+		$hour = date('H');
+		$minute = date('i');
 		
-		//$this->select5('gd11x5'); //廣東11選5
-		//$this->select5('jx11x5'); //江西11選5
-		//$this->select5('sd11x5'); //山東11選5
+		if ($hour > 8 && $hour < 24) $this->happy10('hnkl10'); //湖南快10 開獎時間:09:10~23:00 10分鐘開一次
+		if ($hour > 8 && $hour < 24) $this->happy10('tjkl10'); //天津快10 開獎時間:09:05~22:55 10分鐘開一次
 
-		//$this->pc28('canadapc28'); //加拿大PC28
-		//$this->pc28('bjpc28'); //北京PC28
+		if ($hour > 8 && $hour < 23) $this->fast3('gxk3'); //廣西快3 開獎時間:09:37~22:27 10分鐘開一次
+		if ($hour > 7 && $hour < 22) $this->fast3('shk3'); //上海快3 開獎時間:08:58~21:08 10分鐘開一次
+		if ($hour > 7 && $hour < 22) $this->fast3('jsk3'); //江蘇快3 開獎時間:08:40~21:10 10分鐘開一次
+		
+		if (($hour > 9 && $hour < 24) || ($hour >= 0 && $hour < 3)) $this->tat('xjssc'); //新疆時時彩 開獎時間:10:10~02:00 10分鐘開一次
+		if ($hour > 9 && $hour < 23) $this->tat('cqssc'); //重慶時時彩 開獎時間:白天10:00~22:00 10分鐘開一次 夜場22:00~01:55 5分鐘開一次
+		if ($hour > 8 && $hour < 24) $this->tat('tjssc'); //天津時時彩 開獎時間:09:10~23:00 10分鐘開一次
+		
+		if ($hour > 8 && $hour < 24) $this->select5('gd11x5'); //廣東11選5 開獎時間:09:10~23:00 10分鐘開一次
+		if ($hour > 8 && $hour < 24) $this->select5('jx11x5'); //江西11選5 開獎時間:09:10~23:00 10分鐘開一次
+		if ($hour > 8 && $hour < 22) $this->select5('sd11x5'); //山東11選5 開獎時間:09:05~21:55 10分鐘開一次
 
-		$this->xyft();
+		$this->pc28('canadapc28'); //加拿大PC28 開獎時間: 210秒開一次
+		if ($hour > 8 && $hour < 24) $this->pc28('bjpc28'); //北京PC28 開獎時間:09:05~23:55 5分鐘開一次
+
+		if ($hour > 12 && $hour < 24 || ($hour >= 0 && $hour < 5)) $this->pk10('xyft'); //幸運快艇 開獎時間:13:04~04:04 5分鐘開一次
+		if ($hour > 8 && $hour < 24) $this->pk10('bjpk10'); //北京PK10 開獎時間:09:07~23:57 10分鐘開一次
+
+		if ($hour > 19 && $hour < 21) $this->lottery3('pl3'); //排列3 開獎時間: 20:30
+		if ($hour > 20 && $hour < 22) $this->lottery3('fc3d'); //福彩3D 開獎時間: 21:15
 	}
 
 	//快樂10分
@@ -382,10 +390,10 @@ class Grab extends CI_Controller
 		}
 	}
 
-	//幸運飛艇
-	public function xyft()
+	//PK10 幸運飛艇
+	public function pk10($play)
 	{
-		$lottery = Bc_ettm_record_model::$lottoryList['xyft'];
+		$lottery = Bc_ettm_record_model::$lottoryList[$play];
 		$this->bc_ettm_record_db->set_table($lottery['table']);
 
 		$opts = array(
@@ -396,16 +404,16 @@ class Grab extends CI_Controller
 			)
 		);
 		$context = stream_context_create($opts);
-		$dom = file_get_html("http://www.150557e.com/xyft_historyr.php",false,$context);
+		$url = $play == 'bjpk10' ? 'pk10':$play;
+		$dom = file_get_html("http://www.150557e.com/{$url}_historyr.php",false,$context);
 		
 		$tr = $dom->find("table#table-pk10 tr");
 		foreach ($tr as $k => $v)
 		{
 			if ($k < 1) continue;
-			//if ($v->find('td',1)->find('em',0) == false) break;
 			$numbers = $data = array();
 
-			$data['qishu'] = substr(trim($v->find('td',0)->plaintext),0,11);
+			$data['qishu'] = trim($v->find('td',0)->find('span',0)->plaintext);
 			$numbers[] = trim($v->find('td',1)->find('span',0)->plaintext);
 			$numbers[] = trim($v->find('td',1)->find('span',1)->plaintext);
 			$numbers[] = trim($v->find('td',1)->find('span',2)->plaintext);
@@ -451,6 +459,60 @@ class Grab extends CI_Controller
 				curl_exec($ch);
 				curl_close($ch);*/
 			}
+		}
+	}
+
+	//排列3 福彩3D
+	public function lottery3($play)
+	{
+		$lottery = Bc_ettm_record_model::$lottoryList[$play];
+		$this->bc_ettm_record_db->set_table($lottery['table']);
+
+		$opts = array(
+			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
+			"ssl" => array(
+				"verify_peer"=>false,
+            	"verify_peer_name"=>false,
+			)
+		);
+		$context = stream_context_create($opts);
+		$url = $play == 'fc3d' ? '3d':$play;
+		$dom = file_get_html("http://caipiao.163.com/award/$url",false,$context);
+		
+		$div = $dom->find("div.search_zj_left",0);
+		$data['qishu'] = ($play == 'pl3'?'20':'').trim($div->find('span',0)->plaintext);
+		$numbers[] = trim($div->find('p#zj_area',0)->find('span',0)->plaintext);
+		$numbers[] = trim($div->find('p#zj_area',0)->find('span',1)->plaintext);
+		$numbers[] = trim($div->find('p#zj_area',0)->find('span',2)->plaintext);
+		$data['numbers'] = implode(',',$numbers);
+		$data['status'] = 1;
+
+		//個位數大小
+		$data['value_one'] = $numbers[2] > 4 ? 1:0;
+		//個位數單雙
+		$data['value_two'] = $numbers[2] % 2 == 1 ? 1:0;
+		//十位數大小
+		$data['value_three'] = $numbers[1] > 4 ? 1:0;
+		//十位數單雙
+		$data['value_four'] = $numbers[1] % 2 == 1 ? 1:0;
+		//百位數大小
+		$data['value_five'] = $numbers[0] > 4 ? 1:0;
+		//百位數單雙
+		$data['value_six'] = $numbers[0] % 2 == 1 ? 1:0;
+
+		$row = $this->bc_ettm_record_db->where(array('qishu'=>$data['qishu']))->row_where();
+		if (!isset($row['id']))
+		{
+			//新增
+			$this->bc_ettm_record_db->create($data);
+			/*
+			//派彩
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_POST, true);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('qishu'=>$data['qishu'])));
+			curl_setopt($ch, CURLOPT_URL, $this->config->item('lottery_domain')."index.php/crontabs/$lottery[crontabs]?qishu=$data[qishu]");
+			curl_exec($ch);
+			curl_close($ch);*/
 		}
 	}
 
