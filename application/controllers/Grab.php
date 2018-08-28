@@ -16,7 +16,7 @@ class Grab extends CI_Controller
 	{
 		$hour = date('H');
 		$minute = date('i');
-		
+
 		if ($hour > 8 && $hour < 24) $this->happy10('hnkl10'); //湖南快10 開獎時間:09:10~23:00 10分鐘開一次
 		if ($hour > 8 && $hour < 24) $this->happy10('tjkl10'); //天津快10 開獎時間:09:05~22:55 10分鐘開一次
 
@@ -97,14 +97,31 @@ class Grab extends CI_Controller
 				{
 					//新增
 					$this->bc_ettm_record_db->create($data);
-					/*
+					
 					//派彩
 					$ch = curl_init();
 					curl_setopt($ch, CURLOPT_POST, true);
 					curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('qishu'=>$data['qishu'])));
 					curl_setopt($ch, CURLOPT_URL, $this->config->item('lottery_domain')."index.php/crontabs/$lottery[crontabs]?qishu=$data[qishu]");
 					curl_exec($ch);
-					curl_close($ch);*/
+					curl_close($ch);
+				}
+				else
+				{
+					if ($row['numbers'] == '')
+					{
+						//沒資料就更新
+						$data['id'] = $row['id'];
+						$this->bc_ettm_record_db->update($data);
+		
+						//派彩
+						$ch = curl_init();
+						curl_setopt($ch, CURLOPT_POST, true);
+						curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('qishu'=>$data['qishu'])));
+						curl_setopt($ch, CURLOPT_URL, $this->config->item('lottery_domain')."index.php/crontabs/$lottery[crontabs]?qishu=$data[qishu]");
+						curl_exec($ch);
+						curl_close($ch);
+					}
 				}
 			}
 		}
@@ -165,14 +182,31 @@ class Grab extends CI_Controller
 				{
 					//新增
 					$this->bc_ettm_record_db->create($data);
-					/*
+					
 					//派彩
 					$ch = curl_init();
 					curl_setopt($ch, CURLOPT_POST, true);
 					curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('qishu'=>$data['qishu'])));
 					curl_setopt($ch, CURLOPT_URL, $this->config->item('lottery_domain')."index.php/crontabs/$lottery[crontabs]?qishu=$data[qishu]");
 					curl_exec($ch);
-					curl_close($ch);*/
+					curl_close($ch);
+				}
+				else
+				{
+					if ($row['number_one'] == '')
+					{
+						//沒資料就更新
+						$data['id'] = $row['id'];
+						$this->bc_ettm_record_db->update($data);
+		
+						//派彩
+						$ch = curl_init();
+						curl_setopt($ch, CURLOPT_POST, true);
+						curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('qishu'=>$data['qishu'])));
+						curl_setopt($ch, CURLOPT_URL, $this->config->item('lottery_domain')."index.php/crontabs/$lottery[crontabs]?qishu=$data[qishu]");
+						curl_exec($ch);
+						curl_close($ch);
+					}
 				}
 			}
 		}
@@ -254,14 +288,31 @@ class Grab extends CI_Controller
 				{
 					//新增
 					$this->bc_ettm_record_db->create($data);
-					/*
+					
 					//派彩
 					$ch = curl_init();
 					curl_setopt($ch, CURLOPT_POST, true);
 					curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('qishu'=>$data['qishu'])));
 					curl_setopt($ch, CURLOPT_URL, $this->config->item('lottery_domain')."index.php/crontabs/$lottery[crontabs]?qishu=$data[qishu]");
 					curl_exec($ch);
-					curl_close($ch);*/
+					curl_close($ch);
+				}
+				else
+				{
+					if ($row['numbers'] == '')
+					{
+						//沒資料就更新
+						$data['id'] = $row['id'];
+						$this->bc_ettm_record_db->update($data);
+		
+						//派彩
+						$ch = curl_init();
+						curl_setopt($ch, CURLOPT_POST, true);
+						curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('qishu'=>$data['qishu'])));
+						curl_setopt($ch, CURLOPT_URL, $this->config->item('lottery_domain')."index.php/crontabs/$lottery[crontabs]?qishu=$data[qishu]");
+						curl_exec($ch);
+						curl_close($ch);
+					}
 				}
 			}
 		}
@@ -307,14 +358,31 @@ class Grab extends CI_Controller
 				{
 					//新增
 					$this->bc_ettm_record_db->create($data);
-					/*
+					
 					//派彩
 					$ch = curl_init();
 					curl_setopt($ch, CURLOPT_POST, true);
 					curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('qishu'=>$data['qishu'])));
 					curl_setopt($ch, CURLOPT_URL, $this->config->item('lottery_domain')."index.php/crontabs/$lottery[crontabs]?qishu=$data[qishu]");
 					curl_exec($ch);
-					curl_close($ch);*/
+					curl_close($ch);
+				}
+				else
+				{
+					if ($row['numbers'] == '')
+					{
+						//沒資料就更新
+						$data['id'] = $row['id'];
+						$this->bc_ettm_record_db->update($data);
+		
+						//派彩
+						$ch = curl_init();
+						curl_setopt($ch, CURLOPT_POST, true);
+						curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('qishu'=>$data['qishu'])));
+						curl_setopt($ch, CURLOPT_URL, $this->config->item('lottery_domain')."index.php/crontabs/$lottery[crontabs]?qishu=$data[qishu]");
+						curl_exec($ch);
+						curl_close($ch);
+					}
 				}
 			}
 		}
@@ -378,14 +446,31 @@ class Grab extends CI_Controller
 			{
 				//新增
 				$this->bc_ettm_record_db->create($data);
-				/*
+				
 				//派彩
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_POST, true);
 				curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('qishu'=>$data['qishu'])));
 				curl_setopt($ch, CURLOPT_URL, $this->config->item('lottery_domain')."index.php/crontabs/$lottery[crontabs]?qishu=$data[qishu]");
 				curl_exec($ch);
-				curl_close($ch);*/
+				curl_close($ch);
+			}
+			else
+			{
+				if ($row['number_one'] == '')
+				{
+					//沒資料就更新
+					$data['id'] = $row['id'];
+					$this->bc_ettm_record_db->update($data);
+	
+					//派彩
+					$ch = curl_init();
+					curl_setopt($ch, CURLOPT_POST, true);
+					curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('qishu'=>$data['qishu'])));
+					curl_setopt($ch, CURLOPT_URL, $this->config->item('lottery_domain')."index.php/crontabs/$lottery[crontabs]?qishu=$data[qishu]");
+					curl_exec($ch);
+					curl_close($ch);
+				}
 			}
 		}
 	}
@@ -450,14 +535,31 @@ class Grab extends CI_Controller
 			{
 				//新增
 				$this->bc_ettm_record_db->create($data);
-				/*
+				
 				//派彩
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_POST, true);
 				curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('qishu'=>$data['qishu'])));
 				curl_setopt($ch, CURLOPT_URL, $this->config->item('lottery_domain')."index.php/crontabs/$lottery[crontabs]?qishu=$data[qishu]");
 				curl_exec($ch);
-				curl_close($ch);*/
+				curl_close($ch);
+			}
+			else
+			{
+				if ($row['numbers'] == '')
+				{
+					//沒資料就更新
+					$data['id'] = $row['id'];
+					$this->bc_ettm_record_db->update($data);
+	
+					//派彩
+					$ch = curl_init();
+					curl_setopt($ch, CURLOPT_POST, true);
+					curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('qishu'=>$data['qishu'])));
+					curl_setopt($ch, CURLOPT_URL, $this->config->item('lottery_domain')."index.php/crontabs/$lottery[crontabs]?qishu=$data[qishu]");
+					curl_exec($ch);
+					curl_close($ch);
+				}
 			}
 		}
 	}
@@ -505,14 +607,31 @@ class Grab extends CI_Controller
 		{
 			//新增
 			$this->bc_ettm_record_db->create($data);
-			/*
+			
 			//派彩
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_POST, true);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('qishu'=>$data['qishu'])));
 			curl_setopt($ch, CURLOPT_URL, $this->config->item('lottery_domain')."index.php/crontabs/$lottery[crontabs]?qishu=$data[qishu]");
 			curl_exec($ch);
-			curl_close($ch);*/
+			curl_close($ch);
+		}
+		else
+		{
+			if ($row['numbers'] == '')
+			{
+				//沒資料就更新
+				$data['id'] = $row['id'];
+				$this->bc_ettm_record_db->update($data);
+
+				//派彩
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_POST, true);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('qishu'=>$data['qishu'])));
+				curl_setopt($ch, CURLOPT_URL, $this->config->item('lottery_domain')."index.php/crontabs/$lottery[crontabs]?qishu=$data[qishu]");
+				curl_exec($ch);
+				curl_close($ch);
+			}
 		}
 	}
 
