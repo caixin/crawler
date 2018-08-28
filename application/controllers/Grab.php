@@ -17,29 +17,182 @@ class Grab extends CI_Controller
 		$hour = date('H');
 		$minute = date('i');
 
-		if ($hour > 8 && $hour < 24) $this->happy10('hnkl10'); //湖南快10 開獎時間:09:10~23:00 10分鐘開一次
-		if ($hour > 8 && $hour < 24) $this->happy10('tjkl10'); //天津快10 開獎時間:09:05~22:55 10分鐘開一次
+		try
+		{
+			//湖南快10 開獎時間:09:10~23:00 10分鐘開一次
+			if ($hour > 8 && $hour < 24) $this->happy10('hnkl10');
+		}
+		catch (Exception $e)
+		{
+			log_message('error',"hnkl10 Error!");
+			log_message('error',$e->getMessage());
+		}
+		try
+		{
+			//天津快10 開獎時間:09:05~22:55 10分鐘開一次
+			if ($hour > 8 && $hour < 24) $this->happy10('tjkl10');
+		}
+		catch (Exception $e)
+		{
+			log_message('error',"tjkl10 Error!");
+			log_message('error',$e->getMessage());
+		}
 
-		if ($hour > 8 && $hour < 23) $this->fast3('gxk3'); //廣西快3 開獎時間:09:37~22:27 10分鐘開一次
-		if ($hour > 7 && $hour < 22) $this->fast3('shk3'); //上海快3 開獎時間:08:58~21:08 10分鐘開一次
-		if ($hour > 7 && $hour < 22) $this->fast3('jsk3'); //江蘇快3 開獎時間:08:40~21:10 10分鐘開一次
+		try
+		{
+			//廣西快3 開獎時間:09:37~22:27 10分鐘開一次
+			if ($hour > 8 && $hour < 23) $this->fast3('gxk3');
+		}
+		catch (Exception $e)
+		{
+			log_message('error',"gxk3 Error!");
+			log_message('error',$e->getMessage());
+		}
+		try
+		{
+			//上海快3 開獎時間:08:58~21:08 10分鐘開一次
+			if ($hour > 7 && $hour < 22) $this->fast3('shk3');
+		}
+		catch (Exception $e)
+		{
+			log_message('error',"shk3 Error!");
+			log_message('error',$e->getMessage());
+		}
+		try
+		{
+			//江蘇快3 開獎時間:08:40~21:10 10分鐘開一次
+			if ($hour > 7 && $hour < 22) $this->fast3('jsk3');
+		}
+		catch (Exception $e)
+		{
+			log_message('error',"jsk3 Error!");
+			log_message('error',$e->getMessage());
+		}
+
+		try
+		{
+			//新疆時時彩 開獎時間:10:10~02:00 10分鐘開一次
+			if (($hour > 9 && $hour < 24) || ($hour >= 0 && $hour < 3)) $this->tat('xjssc'); 
+		}
+		catch (Exception $e)
+		{
+			log_message('error',"xjssc Error!");
+			log_message('error',$e->getMessage());
+		}
+		try
+		{
+			//重慶時時彩 開獎時間:白天10:00~22:00 10分鐘開一次 夜場22:00~01:55 5分鐘開一次
+			if ($hour > 9 && $hour < 23) $this->tat('cqssc');
+		}
+		catch (Exception $e)
+		{
+			log_message('error',"cqssc Error!");
+			log_message('error',$e->getMessage());
+		}
+		try
+		{
+			//天津時時彩 開獎時間:09:10~23:00 10分鐘開一次
+			if ($hour > 8 && $hour < 24) $this->tat('tjssc');
+		}
+		catch (Exception $e)
+		{
+			log_message('error',"tjssc Error!");
+			log_message('error',$e->getMessage());
+		}
+
+		try
+		{
+			//廣東11選5 開獎時間:09:10~23:00 10分鐘開一次
+			if ($hour > 8 && $hour < 24) $this->select5('gd11x5');
+		}
+		catch (Exception $e)
+		{
+			log_message('error',"gd11x5 Error!");
+			log_message('error',$e->getMessage());
+		}
+		try
+		{
+			//江西11選5 開獎時間:09:10~23:00 10分鐘開一次
+			if ($hour > 8 && $hour < 24) $this->select5('jx11x5');
+		}
+		catch (Exception $e)
+		{
+			log_message('error',"jx11x5 Error!");
+			log_message('error',$e->getMessage());
+		}
+		try
+		{
+			//山東11選5 開獎時間:09:05~21:55 10分鐘開一次
+			if ($hour > 8 && $hour < 22) $this->select5('sd11x5');
+		}
+		catch (Exception $e)
+		{
+			log_message('error',"sd11x5 Error!");
+			log_message('error',$e->getMessage());
+		}
 		
-		if (($hour > 9 && $hour < 24) || ($hour >= 0 && $hour < 3)) $this->tat('xjssc'); //新疆時時彩 開獎時間:10:10~02:00 10分鐘開一次
-		if ($hour > 9 && $hour < 23) $this->tat('cqssc'); //重慶時時彩 開獎時間:白天10:00~22:00 10分鐘開一次 夜場22:00~01:55 5分鐘開一次
-		if ($hour > 8 && $hour < 24) $this->tat('tjssc'); //天津時時彩 開獎時間:09:10~23:00 10分鐘開一次
+		try
+		{
+			//加拿大PC28 開獎時間: 210秒開一次
+			$this->pc28('canadapc28');
+		}
+		catch (Exception $e)
+		{
+			log_message('error',"canadapc28 Error!");
+			log_message('error',$e->getMessage());
+		}
+		try
+		{
+			//北京PC28 開獎時間:09:05~23:55 5分鐘開一次
+			if ($hour > 8 && $hour < 24) $this->pc28('bjpc28');
+		}
+		catch (Exception $e)
+		{
+			log_message('error',"bjpc28 Error!");
+			log_message('error',$e->getMessage());
+		}
 		
-		if ($hour > 8 && $hour < 24) $this->select5('gd11x5'); //廣東11選5 開獎時間:09:10~23:00 10分鐘開一次
-		if ($hour > 8 && $hour < 24) $this->select5('jx11x5'); //江西11選5 開獎時間:09:10~23:00 10分鐘開一次
-		if ($hour > 8 && $hour < 22) $this->select5('sd11x5'); //山東11選5 開獎時間:09:05~21:55 10分鐘開一次
+		try
+		{
+			//幸運快艇 開獎時間:13:04~04:04 5分鐘開一次
+			if ($hour > 12 && $hour < 24 || ($hour >= 0 && $hour < 5)) $this->pk10('xyft');
+		}
+		catch (Exception $e)
+		{
+			log_message('error',"xyft Error!");
+			log_message('error',$e->getMessage());
+		}
+		try
+		{
+			//北京PK10 開獎時間:09:07~23:57 10分鐘開一次
+			if ($hour > 8 && $hour < 24) $this->pk10('bjpk10');
+		}
+		catch (Exception $e)
+		{
+			log_message('error',"bjpk10 Error!");
+			log_message('error',$e->getMessage());
+		}
 
-		$this->pc28('canadapc28'); //加拿大PC28 開獎時間: 210秒開一次
-		if ($hour > 8 && $hour < 24) $this->pc28('bjpc28'); //北京PC28 開獎時間:09:05~23:55 5分鐘開一次
-
-		if ($hour > 12 && $hour < 24 || ($hour >= 0 && $hour < 5)) $this->pk10('xyft'); //幸運快艇 開獎時間:13:04~04:04 5分鐘開一次
-		if ($hour > 8 && $hour < 24) $this->pk10('bjpk10'); //北京PK10 開獎時間:09:07~23:57 10分鐘開一次
-
-		if ($hour > 19 && $hour < 21) $this->lottery3('pl3'); //排列3 開獎時間: 20:30
-		if ($hour > 20 && $hour < 22) $this->lottery3('fc3d'); //福彩3D 開獎時間: 21:15
+		try
+		{
+			//排列3 開獎時間: 20:30
+			if ($hour > 19 && $hour < 21) $this->lottery3('pl3');
+		}
+		catch (Exception $e)
+		{
+			log_message('error',"pl3 Error!");
+			log_message('error',$e->getMessage());
+		}
+		try
+		{
+			//福彩3D 開獎時間: 21:15
+			if ($hour > 20 && $hour < 22) $this->lottery3('fc3d');
+		}
+		catch (Exception $e)
+		{
+			log_message('error',"fc3d Error!");
+			log_message('error',$e->getMessage());
+		}
 	}
 
 	//快樂10分
