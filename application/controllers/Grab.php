@@ -244,7 +244,7 @@ class Grab extends CI_Controller
 			//新增
 			$this->bc_ettm_record_db->create($data);
 			
-			$this->_dispatch($play,$data['qishu']);
+			$this->_dispatch($lottery['crontabs'],$data['qishu']);
 		}
 		else
 		{
@@ -254,7 +254,7 @@ class Grab extends CI_Controller
 				$data['id'] = $row['id'];
 				$this->bc_ettm_record_db->update($data);
 				
-				$this->_dispatch($play,$data['qishu']);
+				$this->_dispatch($lottery['crontabs'],$data['qishu']);
 			}
 		}
 	}
@@ -307,7 +307,7 @@ class Grab extends CI_Controller
 			//新增
 			$this->bc_ettm_record_db->create($data);
 			
-			$this->_dispatch($play,$data['qishu']);
+			$this->_dispatch($lottery['crontabs'],$data['qishu']);
 		}
 		else
 		{
@@ -317,7 +317,7 @@ class Grab extends CI_Controller
 				$data['id'] = $row['id'];
 				$this->bc_ettm_record_db->update($data);
 
-				$this->_dispatch($play,$data['qishu']);
+				$this->_dispatch($lottery['crontabs'],$data['qishu']);
 			}
 		}
 	}
@@ -391,7 +391,7 @@ class Grab extends CI_Controller
 			//新增
 			$this->bc_ettm_record_db->create($data);
 			
-			$this->_dispatch($play,$data['qishu']);
+			$this->_dispatch($lottery['crontabs'],$data['qishu']);
 		}
 		else
 		{
@@ -401,7 +401,7 @@ class Grab extends CI_Controller
 				$data['id'] = $row['id'];
 				$this->bc_ettm_record_db->update($data);
 
-				$this->_dispatch($play,$data['qishu']);
+				$this->_dispatch($lottery['crontabs'],$data['qishu']);
 			}
 		}
 	}
@@ -440,7 +440,7 @@ class Grab extends CI_Controller
 			//新增
 			$this->bc_ettm_record_db->create($data);
 			
-			$this->_dispatch($play,$data['qishu']);
+			$this->_dispatch($lottery['crontabs'],$data['qishu']);
 		}
 		else
 		{
@@ -450,7 +450,7 @@ class Grab extends CI_Controller
 				$data['id'] = $row['id'];
 				$this->bc_ettm_record_db->update($data);
 
-				$this->_dispatch($play,$data['qishu']);
+				$this->_dispatch($lottery['crontabs'],$data['qishu']);
 			}
 		}
 	}
@@ -509,7 +509,7 @@ class Grab extends CI_Controller
 			//新增
 			$this->bc_ettm_record_db->create($data);
 			
-			$this->_dispatch($play,$data['qishu']);
+			$this->_dispatch($lottery['crontabs'],$data['qishu']);
 		}
 		else
 		{
@@ -519,7 +519,7 @@ class Grab extends CI_Controller
 				$data['id'] = $row['id'];
 				$this->bc_ettm_record_db->update($data);
 
-				$this->_dispatch($play,$data['qishu']);
+				$this->_dispatch($lottery['crontabs'],$data['qishu']);
 			}
 		}
 	}
@@ -580,7 +580,7 @@ class Grab extends CI_Controller
 			//新增
 			$this->bc_ettm_record_db->create($data);
 			
-			$this->_dispatch($play,$data['qishu']);
+			$this->_dispatch($lottery['crontabs'],$data['qishu']);
 		}
 		else
 		{
@@ -590,7 +590,7 @@ class Grab extends CI_Controller
 				$data['id'] = $row['id'];
 				$this->bc_ettm_record_db->update($data);
 
-				$this->_dispatch($play,$data['qishu']);
+				$this->_dispatch($lottery['crontabs'],$data['qishu']);
 			}
 		}
 	}
@@ -639,7 +639,7 @@ class Grab extends CI_Controller
 			//新增
 			$this->bc_ettm_record_db->create($data);
 			
-			$this->_dispatch($play,$data['qishu']);
+			$this->_dispatch($lottery['crontabs'],$data['qishu']);
 		}
 		else
 		{
@@ -649,19 +649,19 @@ class Grab extends CI_Controller
 				$data['id'] = $row['id'];
 				$this->bc_ettm_record_db->update($data);
 
-				$this->_dispatch($play,$data['qishu']);
+				$this->_dispatch($lottery['crontabs'],$data['qishu']);
 			}
 		}
 	}
 
-	private function _dispatch($play,$qishu)
+	private function _dispatch($keyword,$qishu)
 	{
 		//派彩
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('qishu'=>$qishu)));
-		curl_setopt($ch, CURLOPT_URL, $this->config->item('lottery_domain')."index.php/rabbitMQ_c/RabbitMQ_open_numbers?key_word=$play&qishu=$qishu");
+		curl_setopt($ch, CURLOPT_URL, $this->config->item('lottery_domain')."index.php/rabbitMQ_c/RabbitMQ_open_numbers?key_word=$keyword&qishu=$qishu");
 		$result = curl_exec($ch);
 		curl_close($ch);
 	}
