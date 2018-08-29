@@ -1,4 +1,4 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$config['lottery_domain'] = 'http://bcmanager.skylongtech.com/';
+$config['lottery_domain'] = 'http://oa.skylongtech.com/';
