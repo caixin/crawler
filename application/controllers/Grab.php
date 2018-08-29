@@ -213,7 +213,9 @@ class Grab extends CI_Controller
 
 		$data = $numbers = array();
 		$div = $dom->find("div.newPeriodBox",0)->find("div.right",0);
-		$data['qishu'] = '20'.trim(str_replace('-','',$div->find('span',0)->plaintext));
+		$qishu = explode('-',trim($div->find('span',0)->plaintext));
+		if (intval($qishu[1]) == 1) return;
+		$data['qishu'] = '20'.$qishu[0].str_pad(intval($qishu[1]) - 1,2,'0',STR_PAD_LEFT);
 		$numbers[] = trim($div->find('span',1)->plaintext);
 		$numbers[] = trim($div->find('span',2)->plaintext);
 		$numbers[] = trim($div->find('span',3)->plaintext);
@@ -277,7 +279,9 @@ class Grab extends CI_Controller
 		
 		$data = $numbers = array();
 		$div = $dom->find("div.newPeriodBox",0)->find("div.right",0);
-		$data['qishu'] = '20'.trim(str_replace('-','',$div->find('span',0)->plaintext));
+		$qishu = explode('-',trim($div->find('span',0)->plaintext));
+		if (intval($qishu[1]) == 1) return;
+		$data['qishu'] = '20'.$qishu[0].str_pad(intval($qishu[1]) - 1,3,'0',STR_PAD_LEFT);
 		$numbers[] = trim($div->find('span',1)->plaintext);
 		$numbers[] = trim($div->find('span',2)->plaintext);
 		$numbers[] = trim($div->find('span',3)->plaintext);
@@ -340,15 +344,10 @@ class Grab extends CI_Controller
 		
 		$data = $numbers = array();
 		$div = $dom->find("div.newPeriodBox",0)->find("div.right",0);
-		if ($play == 'xjssc')
-		{
-			$qishu = explode('-',trim($div->find('span',0)->plaintext));
-			$data['qishu'] = '20'.$qishu[0].substr($qishu[1],1);
-		}
-		else
-		{
-			$data['qishu'] = '20'.trim(str_replace('-','',$div->find('span',0)->plaintext));
-		}
+
+		$qishu = explode('-',trim($div->find('span',0)->plaintext));
+		if (intval($qishu[1]) == 1) return;
+		$data['qishu'] = '20'.$qishu[0].str_pad(intval($qishu[1]) - 1,($play == 'xjssc'?2:3),'0',STR_PAD_LEFT);
 		$numbers[] = trim($div->find('span',1)->plaintext);
 		$numbers[] = trim($div->find('span',2)->plaintext);
 		$numbers[] = trim($div->find('span',3)->plaintext);
@@ -424,8 +423,10 @@ class Grab extends CI_Controller
 
 		$data = $numbers = array();
 		$div = $dom->find("div.newPeriodBox",0)->find("div.right",0);
+
 		$qishu = explode('-',trim($div->find('span',0)->plaintext));
-		$data['qishu'] = '20'.$qishu[0].str_pad((int)$qishu[1],3,'0',STR_PAD_LEFT);
+		if (intval($qishu[1]) == 1) return;
+		$data['qishu'] = '20'.$qishu[0].str_pad(intval($qishu[1]) - 1,3,'0',STR_PAD_LEFT);
 		$numbers[] = trim($div->find('span',1)->plaintext);
 		$numbers[] = trim($div->find('span',2)->plaintext);
 		$numbers[] = trim($div->find('span',3)->plaintext);
