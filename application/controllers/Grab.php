@@ -27,6 +27,7 @@ class Grab extends CI_Controller
 			log_message('error',"hnkl10 Error!");
 			log_message('error',$e->getMessage());
 		}
+		exit();
 		try
 		{
 			//天津快10 開獎時間:09:05~22:55 10分鐘開一次
@@ -654,17 +655,17 @@ class Grab extends CI_Controller
 		}
 	}
 
-	private function _dispatch($keyword,$qishu)
+	public function _dispatch($keyword,$qishu)
 	{
 		//派彩
-		//$url = $this->config->item('lottery_domain')."index.php/rabbitMQ_c/RabbitMQ_open_numbers?key_word=$keyword&qishu=$qishu";
-		//file_get_contents($url);
+		$url = $this->config->item('lottery_domain')."index.php/rabbitMQ_c/RabbitMQ_open_numbers?key_word=$keyword&qishu=$qishu";
+		file_get_contents($url);
 		
-		$ch = curl_init();
+		/*$ch = curl_init();
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-		curl_setopt($ch, CURLOPT_URL, $this->config->item('lottery_domain')."index.php/rabbitMQ_c/RabbitMQ_open_numbers?key_word=$keyword&qishu=$qishu");
+		curl_setopt($ch, CURLOPT_URL, $url);
 		$result = curl_exec($ch);
-		curl_close($ch);
+		curl_close($ch);*/
 	}
 
 	//湖南快十
