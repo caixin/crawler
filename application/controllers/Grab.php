@@ -27,7 +27,7 @@ class Grab extends CI_Controller
 			log_message('error',"hnkl10 Error!");
 			log_message('error',$e->getMessage());
 		}
-		exit();
+		
 		try
 		{
 			//天津快10 開獎時間:09:05~22:55 10分鐘開一次
