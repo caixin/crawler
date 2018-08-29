@@ -657,10 +657,11 @@ class Grab extends CI_Controller
 	private function _dispatch($keyword,$qishu)
 	{
 		//派彩
+		//$url = $this->config->item('lottery_domain')."index.php/rabbitMQ_c/RabbitMQ_open_numbers?key_word=$keyword&qishu=$qishu";
+		//file_get_contents($url);
+		
 		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POST, true);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('qishu'=>$qishu)));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 		curl_setopt($ch, CURLOPT_URL, $this->config->item('lottery_domain')."index.php/rabbitMQ_c/RabbitMQ_open_numbers?key_word=$keyword&qishu=$qishu");
 		$result = curl_exec($ch);
 		curl_close($ch);
