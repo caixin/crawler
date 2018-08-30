@@ -10,17 +10,21 @@ class Grab extends CI_Controller
         set_time_limit(0);
 		$this->load->library('Simple_html_dom');
         $this->load->model('Bc_ettm_record_model', 'bc_ettm_record_db');
+        $this->load->model('Recordinfo_model', 'recordinfo_db');
 	}
 
 	public function index()
 	{
-		$hour = date('H');
-		$minute = date('i');
-
+		$minute = (date('H') * 60) + date('i');
+		
 		try
 		{
 			//湖南快10 開獎時間:09:10~23:00 10分鐘開一次
-			if ($hour > 8 && $hour < 24) $this->happy10('hnkl10');
+			if ($minute > 550 && $minute < 1390) 
+			{
+				$updatetime = $this->recordinfo_db->get_updatetime('hnkl10');
+				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->happy10('hnkl10');
+			}
 		}
 		catch (Exception $e)
 		{
@@ -30,7 +34,11 @@ class Grab extends CI_Controller
 		try
 		{
 			//天津快10 開獎時間:09:05~22:55 10分鐘開一次
-			if ($hour > 8 && $hour < 24) $this->happy10('tjkl10');
+			if ($minute > 545 && $minute < 1385)
+			{
+				$updatetime = $this->recordinfo_db->get_updatetime('tjkl10');
+				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->happy10('tjkl10');
+			}
 		}
 		catch (Exception $e)
 		{
@@ -41,7 +49,11 @@ class Grab extends CI_Controller
 		try
 		{
 			//廣西快3 開獎時間:09:37~22:27 10分鐘開一次
-			if ($hour > 8 && $hour < 23) $this->fast3('gxk3');
+			if ($minute > 577 && $minute < 1357)
+			{
+				$updatetime = $this->recordinfo_db->get_updatetime('gxk3');
+				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->fast3('gxk3');
+			}
 		}
 		catch (Exception $e)
 		{
@@ -51,7 +63,11 @@ class Grab extends CI_Controller
 		try
 		{
 			//上海快3 開獎時間:08:58~21:08 10分鐘開一次
-			if ($hour > 7 && $hour < 22) $this->fast3('shk3');
+			if ($minute > 538 && $minute < 1278)
+			{
+				$updatetime = $this->recordinfo_db->get_updatetime('shk3');
+				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->fast3('shk3');
+			}
 		}
 		catch (Exception $e)
 		{
@@ -61,7 +77,11 @@ class Grab extends CI_Controller
 		try
 		{
 			//江蘇快3 開獎時間:08:40~21:10 10分鐘開一次
-			if ($hour > 7 && $hour < 22) $this->fast3('jsk3');
+			if ($minute > 520 && $minute < 1280)
+			{
+				$updatetime = $this->recordinfo_db->get_updatetime('jsk3');
+				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->fast3('jsk3');
+			}
 		}
 		catch (Exception $e)
 		{
@@ -72,7 +92,11 @@ class Grab extends CI_Controller
 		try
 		{
 			//新疆時時彩 開獎時間:10:10~02:00 10分鐘開一次
-			if (($hour > 9 && $hour < 24) || ($hour >= 0 && $hour < 3)) $this->tat('xjssc'); 
+			if ($minute > 610 || $minute < 130)
+			{
+				$updatetime = $this->recordinfo_db->get_updatetime('xjssc');
+				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->tat('xjssc');
+			}
 		}
 		catch (Exception $e)
 		{
@@ -82,7 +106,11 @@ class Grab extends CI_Controller
 		try
 		{
 			//重慶時時彩 開獎時間:白天10:00~22:00 10分鐘開一次 夜場22:00~01:55 5分鐘開一次
-			if ($hour > 9 && $hour < 23) $this->tat('cqssc');
+			if ($minute > 600 || $minute < 125)
+			{
+				$updatetime = $this->recordinfo_db->get_updatetime('cqssc');
+				if (date('Y-m-d H:i:s',time()-3*60) >= $updatetime) $this->tat('cqssc');
+			}
 		}
 		catch (Exception $e)
 		{
@@ -92,7 +120,11 @@ class Grab extends CI_Controller
 		try
 		{
 			//天津時時彩 開獎時間:09:10~23:00 10分鐘開一次
-			if ($hour > 8 && $hour < 24) $this->tat('tjssc');
+			if ($minute > 550 && $minute < 1390)
+			{
+				$updatetime = $this->recordinfo_db->get_updatetime('tjssc');
+				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->tat('tjssc');
+			}
 		}
 		catch (Exception $e)
 		{
@@ -103,7 +135,11 @@ class Grab extends CI_Controller
 		try
 		{
 			//廣東11選5 開獎時間:09:10~23:00 10分鐘開一次
-			if ($hour > 8 && $hour < 24) $this->select5('gd11x5');
+			if ($minute > 550 && $minute < 1390)
+			{
+				$updatetime = $this->recordinfo_db->get_updatetime('gd11x5');
+				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->select5('gd11x5');
+			}
 		}
 		catch (Exception $e)
 		{
@@ -113,7 +149,11 @@ class Grab extends CI_Controller
 		try
 		{
 			//江西11選5 開獎時間:09:10~23:00 10分鐘開一次
-			if ($hour > 8 && $hour < 24) $this->select5('jx11x5');
+			if ($minute > 550 && $minute < 1390)
+			{
+				$updatetime = $this->recordinfo_db->get_updatetime('jx11x5');
+				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->select5('jx11x5');
+			}
 		}
 		catch (Exception $e)
 		{
@@ -123,7 +163,11 @@ class Grab extends CI_Controller
 		try
 		{
 			//山東11選5 開獎時間:09:05~21:55 10分鐘開一次
-			if ($hour > 8 && $hour < 22) $this->select5('sd11x5');
+			if ($minute > 545 && $minute < 1325)
+			{
+				$updatetime = $this->recordinfo_db->get_updatetime('sd11x5');
+				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->select5('sd11x5');
+			}
 		}
 		catch (Exception $e)
 		{
@@ -134,7 +178,8 @@ class Grab extends CI_Controller
 		try
 		{
 			//加拿大PC28 開獎時間: 210秒開一次
-			$this->pc28('canadapc28');
+			$updatetime = $this->recordinfo_db->get_updatetime('canadapc28');
+			if (date('Y-m-d H:i:s',time()-2*60) >= $updatetime) $this->pc28('canadapc28');
 		}
 		catch (Exception $e)
 		{
@@ -144,7 +189,11 @@ class Grab extends CI_Controller
 		try
 		{
 			//北京PC28 開獎時間:09:05~23:55 5分鐘開一次
-			if ($hour > 8 && $hour < 24) $this->pc28('bjpc28');
+			if ($minute > 545 || $minute < 5)
+			{
+				$updatetime = $this->recordinfo_db->get_updatetime('bjpc28');
+				if (date('Y-m-d H:i:s',time()-3*60) >= $updatetime) $this->pc28('bjpc28');
+			}
 		}
 		catch (Exception $e)
 		{
@@ -155,7 +204,11 @@ class Grab extends CI_Controller
 		try
 		{
 			//幸運快艇 開獎時間:13:04~04:04 5分鐘開一次
-			if ($hour > 12 && $hour < 24 || ($hour >= 0 && $hour < 5)) $this->pk10('xyft');
+			if ($minute > 784 || $minute < 254)
+			{
+				$updatetime = $this->recordinfo_db->get_updatetime('xyft');
+				if (date('Y-m-d H:i:s',time()-3*60) >= $updatetime) $this->pk10('xyft');
+			}
 		}
 		catch (Exception $e)
 		{
@@ -165,7 +218,11 @@ class Grab extends CI_Controller
 		try
 		{
 			//北京PK10 開獎時間:09:07~23:57 10分鐘開一次
-			if ($hour > 8 && $hour < 24) $this->pk10('bjpk10');
+			if ($minute > 547 || $minute < 7)
+			{
+				$updatetime = $this->recordinfo_db->get_updatetime('bjpk10');
+				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->pk10('bjpk10');
+			}
 		}
 		catch (Exception $e)
 		{
@@ -176,7 +233,11 @@ class Grab extends CI_Controller
 		try
 		{
 			//排列3 開獎時間: 20:30
-			if ($hour > 19 && $hour < 21) $this->lottery3('pl3');
+			if ($minute > 1230 && $minute < 1250)
+			{
+				$updatetime = $this->recordinfo_db->get_updatetime('pl3');
+				if (date('Y-m-d H:i:s',time()-20*60) >= $updatetime) $this->lottery3('pl3');
+			}
 		}
 		catch (Exception $e)
 		{
@@ -186,7 +247,11 @@ class Grab extends CI_Controller
 		try
 		{
 			//福彩3D 開獎時間: 21:15
-			if ($hour > 20 && $hour < 22) $this->lottery3('fc3d');
+			if ($minute > 1275 && $minute < 1295)
+			{
+				$updatetime = $this->recordinfo_db->get_updatetime('fc3d');
+				if (date('Y-m-d H:i:s',time()-20*60) >= $updatetime) $this->lottery3('fc3d');
+			}
 		}
 		catch (Exception $e)
 		{
@@ -241,23 +306,12 @@ class Grab extends CI_Controller
 		$data['value_four'] = $numbers[0] > $numbers[7] ? '龙':'虎';
 
 		$row = $this->bc_ettm_record_db->where(array('qishu'=>$data['qishu']))->row_where();
-		if (!isset($row['id']))
+		if (isset($row['id']) && intval($row['status']) == 0)
 		{
-			//新增
-			$this->bc_ettm_record_db->create($data);
+			$data['id'] = $row['id'];
+			$this->bc_ettm_record_db->update($data);
 			
-			$this->_dispatch($lottery['crontabs'],$data['qishu']);
-		}
-		else
-		{
-			if ($row['numbers'] == '')
-			{
-				//沒資料就更新
-				$data['id'] = $row['id'];
-				$this->bc_ettm_record_db->update($data);
-				
-				$this->_dispatch($lottery['crontabs'],$data['qishu']);
-			}
+			$this->_dispatch($play,$data['qishu']);
 		}
 	}
 
@@ -306,23 +360,12 @@ class Grab extends CI_Controller
 		$data['value_seven'] = $numbers[2] == $numbers[1] || $numbers[1] == $numbers[0] || $numbers[2] == $numbers[0] ? 1:0;
 		
 		$row = $this->bc_ettm_record_db->where(array('qishu'=>$data['qishu']))->row_where();
-		if (!isset($row['id']))
+		if (isset($row['id']) && intval($row['status']) == 0)
 		{
-			//新增
-			$this->bc_ettm_record_db->create($data);
+			$data['id'] = $row['id'];
+			$this->bc_ettm_record_db->update($data);
 			
-			$this->_dispatch($lottery['crontabs'],$data['qishu']);
-		}
-		else
-		{
-			if ($row['number_one'] == '')
-			{
-				//沒資料就更新
-				$data['id'] = $row['id'];
-				$this->bc_ettm_record_db->update($data);
-
-				$this->_dispatch($lottery['crontabs'],$data['qishu']);
-			}
+			$this->_dispatch($play,$data['qishu']);
 		}
 	}
 
@@ -385,23 +428,12 @@ class Grab extends CI_Controller
 		else $data['value_fifteen'] = 1;
 		
 		$row = $this->bc_ettm_record_db->where(array('qishu'=>$data['qishu']))->row_where();
-		if (!isset($row['id']))
+		if (isset($row['id']) && intval($row['status']) == 0)
 		{
-			//新增
-			$this->bc_ettm_record_db->create($data);
+			$data['id'] = $row['id'];
+			$this->bc_ettm_record_db->update($data);
 			
-			$this->_dispatch($lottery['crontabs'],$data['qishu']);
-		}
-		else
-		{
-			if ($row['numbers'] == '')
-			{
-				//沒資料就更新
-				$data['id'] = $row['id'];
-				$this->bc_ettm_record_db->update($data);
-
-				$this->_dispatch($lottery['crontabs'],$data['qishu']);
-			}
+			$this->_dispatch($play,$data['qishu']);
 		}
 	}
 
@@ -436,23 +468,12 @@ class Grab extends CI_Controller
 		$data['status'] = 1;
 
 		$row = $this->bc_ettm_record_db->where(array('qishu'=>$data['qishu']))->row_where();
-		if (!isset($row['id']))
+		if (isset($row['id']) && intval($row['status']) == 0)
 		{
-			//新增
-			$this->bc_ettm_record_db->create($data);
+			$data['id'] = $row['id'];
+			$this->bc_ettm_record_db->update($data);
 			
-			$this->_dispatch($lottery['crontabs'],$data['qishu']);
-		}
-		else
-		{
-			if ($row['numbers'] == '')
-			{
-				//沒資料就更新
-				$data['id'] = $row['id'];
-				$this->bc_ettm_record_db->update($data);
-
-				$this->_dispatch($lottery['crontabs'],$data['qishu']);
-			}
+			$this->_dispatch($play,$data['qishu']);
 		}
 	}
 
@@ -505,23 +526,12 @@ class Grab extends CI_Controller
 		$data['value_ten'] = $numbers[2] - $numbers[1] == 1 && $numbers[1] - $numbers[0] == 1 ? 1:0;
 		
 		$row = $this->bc_ettm_record_db->where(array('qishu'=>$data['qishu']))->row_where();
-		if (!isset($row['id']))
+		if (isset($row['id']) && intval($row['status']) == 0)
 		{
-			//新增
-			$this->bc_ettm_record_db->create($data);
+			$data['id'] = $row['id'];
+			$this->bc_ettm_record_db->update($data);
 			
-			$this->_dispatch($lottery['crontabs'],$data['qishu']);
-		}
-		else
-		{
-			if ($row['number_one'] == '')
-			{
-				//沒資料就更新
-				$data['id'] = $row['id'];
-				$this->bc_ettm_record_db->update($data);
-
-				$this->_dispatch($lottery['crontabs'],$data['qishu']);
-			}
+			$this->_dispatch($play,$data['qishu']);
 		}
 	}
 
@@ -576,23 +586,12 @@ class Grab extends CI_Controller
 		$data['value_eight'] = $numbers[4] > $numbers[5] ? '龙':'虎';
 		
 		$row = $this->bc_ettm_record_db->where(array('qishu'=>$data['qishu']))->row_where();
-		if (!isset($row['id']))
+		if (isset($row['id']) && intval($row['status']) == 0)
 		{
-			//新增
-			$this->bc_ettm_record_db->create($data);
+			$data['id'] = $row['id'];
+			$this->bc_ettm_record_db->update($data);
 			
-			$this->_dispatch($lottery['crontabs'],$data['qishu']);
-		}
-		else
-		{
-			if ($row['numbers'] == '')
-			{
-				//沒資料就更新
-				$data['id'] = $row['id'];
-				$this->bc_ettm_record_db->update($data);
-
-				$this->_dispatch($lottery['crontabs'],$data['qishu']);
-			}
+			$this->_dispatch($play,$data['qishu']);
 		}
 	}
 
@@ -635,95 +634,30 @@ class Grab extends CI_Controller
 		$data['value_six'] = $numbers[0] % 2 == 1 ? 1:0;
 		
 		$row = $this->bc_ettm_record_db->where(array('qishu'=>$data['qishu']))->row_where();
-		if (!isset($row['id']))
+		if (isset($row['id']) && intval($row['status']) == 0)
 		{
-			//新增
-			$this->bc_ettm_record_db->create($data);
+			$data['id'] = $row['id'];
+			$this->bc_ettm_record_db->update($data);
 			
-			$this->_dispatch($lottery['crontabs'],$data['qishu']);
-		}
-		else
-		{
-			if ($row['numbers'] == '')
-			{
-				//沒資料就更新
-				$data['id'] = $row['id'];
-				$this->bc_ettm_record_db->update($data);
-
-				$this->_dispatch($lottery['crontabs'],$data['qishu']);
-			}
+			$this->_dispatch($play,$data['qishu']);
 		}
 	}
 
-	public function _dispatch($keyword,$qishu)
+	public function _dispatch($play,$qishu)
 	{
+		$lottery = Bc_ettm_record_model::$lottoryList[$play];
+		$keyword = $lottery['crontabs'];
+		//寫入最後開彩時間
+		$this->recordinfo_db->update_qishu($play,$qishu);
+		/*
 		//派彩
-		$url = $this->config->item('lottery_domain')."index.php/rabbitMQ_c/RabbitMQ_open_numbers?key_word=$keyword&qishu=$qishu";
+		$url = $this->config->item('lottery_domain')."index.php/rabbitMQ_c/RabbitMQ_open_numbers?key_word={$keyword}&qishu={$qishu}";
 		//file_get_contents($url);
 		
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 		curl_setopt($ch, CURLOPT_URL, $url);
 		$result = curl_exec($ch);
-		curl_close($ch);
+		curl_close($ch);*/
 	}
-
-	//湖南快十
-	/*
-	public function hnkl10()
-	{
-        $this->load->model('Bc_ettm_hn_v_happy_record_model', 'bc_ettm_hn_v_happy_record_db');
-
-		$opts = array('http'=>array('header' => "User-Agent:MyAgent/1.0\r\n"));
-		$context = stream_context_create($opts);
-		$dom = file_get_html('http://hnkl10.icaile.com',false,$context);
-		
-		$tr = $dom->find('table#fixedtable tr');
-		foreach ($tr as $k => $v)
-		{
-			if ($k < 2) continue;
-			if ($v->find('td',2) == false) break;
-			$numbers = $data = array();
-
-			$data['qishu'] = '20'.$v->find('td',0)->plaintext;
-			$numbers[] = $v->find('td',1)->plaintext;
-			$numbers[] = $v->find('td',2)->plaintext;
-			$numbers[] = $v->find('td',3)->plaintext;
-			$numbers[] = $v->find('td',4)->plaintext;
-			$numbers[] = $v->find('td',5)->plaintext;
-			$numbers[] = $v->find('td',6)->plaintext;
-			$numbers[] = $v->find('td',7)->plaintext;
-			$numbers[] = $v->find('td',8)->plaintext;
-			$data['numbers'] = implode(',',$numbers);
-			$data['status'] = 1;
-			
-			$total = array_sum($numbers);
-			//大小
-			if ($total > 84) $data['value_one'] = '总大';
-			if ($total < 84) $data['value_one'] = '总小';
-			if ($total == 84) $data['value_one'] = '和';
-			//單雙
-			$data['value_two'] = ($total % 2 == 0) ? '双':'单';
-			//尾數
-			$mantissa = (int)substr($total,-1);
-			$data['value_three'] = $mantissa >= 5 ? '尾大':'尾小';
-			//龍虎
-			$data['value_four'] = $numbers[0] > $numbers[7] ? '龙':'虎';
-
-			$row = $this->bc_ettm_hn_v_happy_record_db->where(array('qishu'=>$data['qishu']))->row_where();
-			if (!isset($row['id']))
-			{
-				//新增
-				$this->bc_ettm_hn_v_happy_record_db->create($data);
-				
-				//派彩
-				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_POST, true);
-				curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('qishu'=>$data['qishu'])));
-				curl_setopt($ch, CURLOPT_URL, $this->config->item('lottery_domain')."index.php/crontabs/crontabsSetHnVHappyOpen?qishu=$data[qishu]");
-				curl_exec($ch);
-				curl_close($ch);
-			}
-		}
-	}*/
 }
