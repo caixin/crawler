@@ -7,7 +7,7 @@ class Grab extends CI_Controller
     {
 		parent::__construct();
 		
-        set_time_limit(0);
+        set_time_limit(600);
 		$this->load->library('Simple_html_dom');
         $this->load->model('Bc_ettm_record_model', 'bc_ettm_record_db');
         $this->load->model('Recordinfo_model', 'recordinfo_db');
@@ -20,7 +20,7 @@ class Grab extends CI_Controller
 		try
 		{
 			//湖南快10 開獎時間:09:10~23:00 10分鐘開一次
-			if ($minute > 550 && $minute < 1390) 
+			if ($minute > 550 && $minute < 1390)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('hnkl10');
 				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->happy10('hnkl10');
@@ -649,7 +649,7 @@ class Grab extends CI_Controller
 		$keyword = $lottery['crontabs'];
 		//寫入最後開彩時間
 		$this->recordinfo_db->update_qishu($play,$qishu);
-		/*
+		
 		//派彩
 		$url = $this->config->item('lottery_domain')."index.php/rabbitMQ_c/RabbitMQ_open_numbers?key_word={$keyword}&qishu={$qishu}";
 		//file_get_contents($url);
@@ -658,6 +658,6 @@ class Grab extends CI_Controller
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 		curl_setopt($ch, CURLOPT_URL, $url);
 		$result = curl_exec($ch);
-		curl_close($ch);*/
+		curl_close($ch);
 	}
 }
