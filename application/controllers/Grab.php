@@ -22,8 +22,14 @@ class Grab extends CI_Controller
 			//湖南快10 開獎時間:09:10~23:00 10分鐘開一次
 			if ($minute > 550 && $minute < 1390)
 			{
+				$run = false;
 				$updatetime = $this->recordinfo_db->get_updatetime('hnkl10');
-				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->happy10('hnkl10');
+				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
+				{
+					$run = $this->happy10_2('hnkl10');
+					if (!$run) $this->happy10('hnkl10');
+				}
+				
 			}
 		}
 		catch (Exception $e)
@@ -37,7 +43,11 @@ class Grab extends CI_Controller
 			if ($minute > 545 && $minute < 1385)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('tjkl10');
-				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->happy10('tjkl10');
+				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
+				{
+					$run = $this->happy10_2('tjkl10');
+					if (!$run) $this->happy10('tjkl10');
+				}
 			}
 		}
 		catch (Exception $e)
@@ -52,7 +62,11 @@ class Grab extends CI_Controller
 			if ($minute > 577 && $minute < 1357)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('gxk3');
-				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->fast3('gxk3');
+				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
+				{
+					$run = $this->fast3_2('gxk3');
+					if (!$run) $this->fast3('gxk3');
+				}
 			}
 		}
 		catch (Exception $e)
@@ -66,7 +80,11 @@ class Grab extends CI_Controller
 			if ($minute > 538 && $minute < 1278)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('shk3');
-				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->fast3('shk3');
+				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
+				{
+					$run = $this->fast3_2('shk3');
+					if (!$run) $this->fast3('shk3');
+				}
 			}
 		}
 		catch (Exception $e)
@@ -80,7 +98,11 @@ class Grab extends CI_Controller
 			if ($minute > 520 && $minute < 1280)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('jsk3');
-				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->fast3('jsk3');
+				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
+				{
+					$run = $this->fast3_2('jsk3');
+					if (!$run) $this->fast3('jsk3');
+				}
 			}
 		}
 		catch (Exception $e)
@@ -88,14 +110,14 @@ class Grab extends CI_Controller
 			log_message('error',"jsk3 Error!");
 			log_message('error',$e->getMessage());
 		}
-
+		
 		try
 		{
 			//新疆時時彩 開獎時間:10:10~02:00 10分鐘開一次
 			if ($minute > 610 || $minute < 130)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('xjssc');
-				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->tat('xjssc');
+				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->xjssc();
 			}
 		}
 		catch (Exception $e)
@@ -123,7 +145,7 @@ class Grab extends CI_Controller
 			if ($minute > 550 && $minute < 1390)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('tjssc');
-				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->tat('tjssc');
+				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->tat2('tjssc');
 			}
 		}
 		catch (Exception $e)
@@ -138,7 +160,11 @@ class Grab extends CI_Controller
 			if ($minute > 550 && $minute < 1390)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('gd11x5');
-				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->select5('gd11x5');
+				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
+				{
+					$run = $this->select5_2('gd11x5');
+					if (!$run) $this->select5('gd11x5');
+				}
 			}
 		}
 		catch (Exception $e)
@@ -152,7 +178,11 @@ class Grab extends CI_Controller
 			if ($minute > 550 && $minute < 1390)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('jx11x5');
-				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->select5('jx11x5');
+				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
+				{
+					$run = $this->select5_2('jx11x5');
+					if (!$run) $this->select5('jx11x5');
+				}
 			}
 		}
 		catch (Exception $e)
@@ -166,7 +196,11 @@ class Grab extends CI_Controller
 			if ($minute > 545 && $minute < 1325)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('sd11x5');
-				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->select5('sd11x5');
+				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
+				{
+					$run = $this->select5_2('sd11x5');
+					if (!$run) $this->select5('sd11x5');
+				}
 			}
 		}
 		catch (Exception $e)
@@ -263,15 +297,9 @@ class Grab extends CI_Controller
 	//快樂10分
 	public function happy10($play)
 	{
-		$lottery = Bc_ettm_record_model::$lottoryList[$play];
-		$this->bc_ettm_record_db->set_table($lottery['table']);
-
 		$opts = array(
 			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
-			"ssl" => array(
-				"verify_peer"=>false,
-            	"verify_peer_name"=>false,
-			)
+			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
 		);
 		$context = stream_context_create($opts);
 		$dom = file_get_html("https://pub.icaile.com/$play",false,$context);
@@ -289,44 +317,55 @@ class Grab extends CI_Controller
 		$numbers[] = trim($div->find('span',6)->plaintext);
 		$numbers[] = trim($div->find('span',7)->plaintext);
 		$numbers[] = trim($div->find('span',8)->plaintext);
-		$data['numbers'] = implode(',',$numbers);
-		$data['status'] = 1;
-		
-		$total = array_sum($numbers);
-		//大小
-		if ($total > 84) $data['value_one'] = '总大';
-		if ($total < 84) $data['value_one'] = '总小';
-		if ($total == 84) $data['value_one'] = '和';
-		//單雙
-		$data['value_two'] = ($total % 2 == 0) ? '双':'单';
-		//尾數
-		$mantissa = (int)substr($total,-1);
-		$data['value_three'] = $mantissa >= 5 ? '尾大':'尾小';
-		//龍虎
-		$data['value_four'] = $numbers[0] > $numbers[7] ? '龙':'虎';
-
-		$row = $this->bc_ettm_record_db->where(array('qishu'=>$data['qishu']))->row_where();
-		if (isset($row['id']) && intval($row['status']) == 0)
+		foreach ($numbers as $val)
 		{
-			$data['id'] = $row['id'];
-			$this->bc_ettm_record_db->update($data);
-			
-			$this->_dispatch($play,$data['qishu']);
+			if (!is_numeric($val)) exit();
 		}
+
+		$data = $this->bc_ettm_record_db->happy10($numbers,$data);
+		return $this->_dispatch($play,$data);
+	}
+	
+	//快樂10分-2
+	public function happy10_2($play)
+	{
+		$opts = array(
+			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
+			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
+		);
+		$context = stream_context_create($opts);
+		$url = '';
+		if ($play == 'hnkl10') $url = '135';
+		if ($play == 'tjkl10') $url = '132';
+		if ($url == '') return;
+		$dom = file_get_html("https://www.ydniu.com/open/$url.html",false,$context);
+
+		$data = $numbers = array();
+		$tr = $dom->find("table.gg_ls",0)->find("tr",1);
+		$data['qishu'] = str_replace('期','',trim($tr->find('td',0)->plaintext));
+		$numbers[] = (int)trim($tr->find('td',1)->find('li',0)->plaintext);
+		$numbers[] = (int)trim($tr->find('td',1)->find('li',1)->plaintext);
+		$numbers[] = (int)trim($tr->find('td',1)->find('li',2)->plaintext);
+		$numbers[] = (int)trim($tr->find('td',1)->find('li',3)->plaintext);
+		$numbers[] = (int)trim($tr->find('td',1)->find('li',4)->plaintext);
+		$numbers[] = (int)trim($tr->find('td',1)->find('li',5)->plaintext);
+		$numbers[] = (int)trim($tr->find('td',1)->find('li',6)->plaintext);
+		$numbers[] = (int)trim($tr->find('td',1)->find('li',7)->plaintext);
+		foreach ($numbers as $val)
+		{
+			if (!is_numeric($val)) exit();
+		}
+
+		$data = $this->bc_ettm_record_db->happy10($numbers,$data);
+		return $this->_dispatch($play,$data);
 	}
 
 	//快3
 	public function fast3($play)
 	{
-		$lottery = Bc_ettm_record_model::$lottoryList[$play];
-		$this->bc_ettm_record_db->set_table($lottery['table']);
-
 		$opts = array(
 			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
-			"ssl" => array(
-				"verify_peer"=>false,
-            	"verify_peer_name"=>false,
-			)
+			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
 		);
 		$context = stream_context_create($opts);
 		$dom = file_get_html("https://pub.icaile.com/$play",false,$context);
@@ -339,48 +378,107 @@ class Grab extends CI_Controller
 		$numbers[] = trim($div->find('span',1)->plaintext);
 		$numbers[] = trim($div->find('span',2)->plaintext);
 		$numbers[] = trim($div->find('span',3)->plaintext);
-		$data['number_one'] = $numbers[0];
-		$data['number_two'] = $numbers[1];
-		$data['number_three'] = $numbers[2];
-		$data['status'] = 1;
-		
-		$total = array_sum($numbers);
-		$data['value_three'] = $total;
-		//大小
-		$data['value_one'] = ($total > 10) ? 1:0;
-		//單雙
-		$data['value_two'] = ($total % 2 == 0) ? 0:1;
-		//三號不同
-		$data['value_four'] = count(array_unique($numbers)) == 3 ? 1:0;
-		//三號順子
-		$data['value_five'] = $numbers[2] - $numbers[1] == 1 && $numbers[1] - $numbers[0] == 1 ? 1:0;
-		//豹子
-		$data['value_six'] = $numbers[2] == $numbers[1] && $numbers[1] == $numbers[0] ? 1:0;
-		//兩號複選
-		$data['value_seven'] = $numbers[2] == $numbers[1] || $numbers[1] == $numbers[0] || $numbers[2] == $numbers[0] ? 1:0;
-		
-		$row = $this->bc_ettm_record_db->where(array('qishu'=>$data['qishu']))->row_where();
-		if (isset($row['id']) && intval($row['status']) == 0)
+		foreach ($numbers as $val) 
 		{
-			$data['id'] = $row['id'];
-			$this->bc_ettm_record_db->update($data);
-			
-			$this->_dispatch($play,$data['qishu']);
+			if (!is_numeric($val)) exit();
 		}
+		
+		$data = $this->bc_ettm_record_db->fast3($numbers,$data);
+		return $this->_dispatch($play,$data);
 	}
 
-	//時時彩
-	public function tat($play)
+	//快3
+	public function fast3_2($play)
 	{
-		$lottery = Bc_ettm_record_model::$lottoryList[$play];
-		$this->bc_ettm_record_db->set_table($lottery['table']);
-
 		$opts = array(
 			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
-			"ssl" => array(
-				"verify_peer"=>false,
-            	"verify_peer_name"=>false,
-			)
+			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
+		);
+		$context = stream_context_create($opts);
+		$url = '';
+		if ($play == 'gxk3') $url = '89';
+		if ($play == 'shk3') $url = '119';
+		if ($play == 'jsk3') $url = '86';
+		if ($url == '') return;
+		$dom = file_get_html("https://www.ydniu.com/open/$url.html",false,$context);
+
+		$data = $numbers = array();
+		$tr = $dom->find("table.gg_ls",0)->find("tr",1);
+		$qishu = str_replace('期','',trim($tr->find('td',0)->plaintext));
+		$data['qishu'] = substr($qishu,0,8).str_pad(substr($qishu,8),3,'0',STR_PAD_LEFT);
+		$numbers[] = (int)trim($tr->find('td',2)->find('li',0)->plaintext);
+		$numbers[] = (int)trim($tr->find('td',2)->find('li',1)->plaintext);
+		$numbers[] = (int)trim($tr->find('td',2)->find('li',2)->plaintext);
+		foreach ($numbers as $val) 
+		{
+			if (!is_numeric($val)) exit();
+		}
+		
+		$data = $this->bc_ettm_record_db->fast3($numbers,$data); print_r($data); exit();
+		return $this->_dispatch($play,$data);
+	}
+
+	//新疆時時彩
+	public function xjssc()
+	{
+		$opts = array(
+			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
+			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
+		);
+		$context = stream_context_create($opts);
+		$dom = file_get_html("http://www.xjflcp.com/game/sscIndex",false,$context);
+		
+		$data = $numbers = array();
+		$div = $dom->find("div.con_left",1);
+
+		$data['qishu'] = trim($div->find('span',0)->plaintext);
+		$numbers[] = trim($div->find('i',0)->plaintext);
+		$numbers[] = trim($div->find('i',1)->plaintext);
+		$numbers[] = trim($div->find('i',2)->plaintext);
+		$numbers[] = trim($div->find('i',3)->plaintext);
+		$numbers[] = trim($div->find('i',4)->plaintext);
+		foreach ($numbers as $val) 
+		{
+			if (!is_numeric($val)) exit();
+		}
+		$data = $this->bc_ettm_record_db->tat($numbers,$data);
+		$this->_dispatch('xjssc',$data);
+	}
+
+	//時時彩-重慶+新疆
+	public function tat($play)
+	{
+		$opts = array(
+			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
+			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
+		);
+		$context = stream_context_create($opts);
+		$dom = file_get_html("http://www.ssztzzy.com/?c=record&a=game&lottery_type=$play",false,$context);
+		
+		$data = $numbers = array();
+		$div = $dom->find("div.ionic-scroll",0)->find("div.row",0);
+
+		$data['qishu'] = trim($div->find('div.cont',0)->find('div.ng-binding',0)->plaintext);
+		$numbers[] = trim($div->find('div.cont',1)->find('span',0)->plaintext);
+		$numbers[] = trim($div->find('div.cont',1)->find('span',1)->plaintext);
+		$numbers[] = trim($div->find('div.cont',1)->find('span',2)->plaintext);
+		$numbers[] = trim($div->find('div.cont',1)->find('span',3)->plaintext);
+		$numbers[] = trim($div->find('div.cont',1)->find('span',4)->plaintext);
+		foreach ($numbers as $val) 
+		{
+			if (!is_numeric($val)) exit();
+		}
+
+		$data = $this->bc_ettm_record_db->tat($numbers,$data);
+		$this->_dispatch($play,$data);
+	}
+
+	//時時彩-天津
+	public function tat2($play)
+	{
+		$opts = array(
+			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
+			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
 		);
 		$context = stream_context_create($opts);
 		$dom = file_get_html("https://pub.icaile.com/$play",false,$context);
@@ -396,59 +494,21 @@ class Grab extends CI_Controller
 		$numbers[] = trim($div->find('span',3)->plaintext);
 		$numbers[] = trim($div->find('span',4)->plaintext);
 		$numbers[] = trim($div->find('span',5)->plaintext);
-		$data['numbers'] = implode(',',$numbers);
-		$data['status'] = 1;
-				
-		$top3 = array_slice($numbers,0,3);
-		$medium3 = array_slice($numbers,1,3);
-		$after3 = array_slice($numbers,2,3);
-		sort($top3);
-		sort($medium3);
-		sort($after3);
-
-		$data['value_one'] = $data['value_two'] = $data['value_three'] = $data['value_four'] = $data['value_five'] = 0;
-		if (count(array_flip($top3)) == 1) $data['value_one'] = 1;
-		elseif (($top3[2] - $top3[1] == 1 && $top3[1] - $top3[0] == 1) || $top3 == [0,1,9] || $top3 == [0,8,9]) $data['value_two'] = 1;
-		elseif (count(array_flip($top3)) == 2) $data['value_three'] = 1;
-		elseif ($top3[1] - $top3[0] == 1 || $top3[2] - $top3[1] == 1 || $top3[2] - $top3[0] == 9) $data['value_four'] = 1;
-		else $data['value_five'] = 1;
-		
-		$data['value_six'] = $data['value_seven'] = $data['value_eight'] = $data['value_nine'] = $data['value_ten'] = 0;
-		if (count(array_flip($medium3)) == 1) $data['value_six'] = 1;
-		elseif (($medium3[2] - $medium3[1] == 1 && $medium3[1] - $medium3[0] == 1) || $medium3 == [0,1,9] || $medium3 == [0,8,9]) $data['value_seven'] = 1;
-		elseif (count(array_flip($medium3)) == 2) $data['value_eight'] = 1;
-		elseif ($medium3[1] - $medium3[0] == 1 || $medium3[2] - $medium3[1] == 1 || $medium3[2] - $medium3[0] == 9) $data['value_nine'] = 1;
-		else $data['value_ten'] = 1;
-		
-		$data['value_eleven'] = $data['value_twelve'] = $data['value_thirteen'] = $data['value_fourteen'] = $data['value_fifteen'] = 0;
-		if (count(array_flip($after3)) == 1) $data['value_eleven'] = 1;
-		elseif (($after3[2] - $after3[1] == 1 && $after3[1] - $after3[0] == 1) || $after3 == [0,1,9] || $after3 == [0,8,9]) $data['value_twelve'] = 1;
-		elseif (count(array_flip($after3)) == 2) $data['value_thirteen'] = 1;
-		elseif ($after3[1] - $after3[0] == 1 || $after3[2] - $after3[1] == 1 || $after3[2] - $after3[0] == 9) $data['value_fourteen'] = 1;
-		else $data['value_fifteen'] = 1;
-		
-		$row = $this->bc_ettm_record_db->where(array('qishu'=>$data['qishu']))->row_where();
-		if (isset($row['id']) && intval($row['status']) == 0)
+		foreach ($numbers as $val) 
 		{
-			$data['id'] = $row['id'];
-			$this->bc_ettm_record_db->update($data);
-			
-			$this->_dispatch($play,$data['qishu']);
+			if (!is_numeric($val)) exit();
 		}
+
+		$data = $this->bc_ettm_record_db->tat($numbers,$data);
+		$this->_dispatch($play,$data);
 	}
 
 	//11選5
 	public function select5($play)
 	{
-		$lottery = Bc_ettm_record_model::$lottoryList[$play];
-		$this->bc_ettm_record_db->set_table($lottery['table']);
-
 		$opts = array(
 			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
-			"ssl" => array(
-				"verify_peer"=>false,
-            	"verify_peer_name"=>false,
-			)
+			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
 		);
 		$context = stream_context_create($opts);
 		$dom = file_get_html("https://pub.icaile.com/$play",false,$context);
@@ -457,38 +517,63 @@ class Grab extends CI_Controller
 		$div = $dom->find("div.newPeriodBox",0)->find("div.right",0);
 
 		$qishu = explode('-',trim($div->find('span',0)->plaintext));
-		if (intval($qishu[1]) == 1) return;
+		if (intval($qishu[1]) == 1) exit();
 		$data['qishu'] = '20'.$qishu[0].str_pad(intval($qishu[1]) - 1,3,'0',STR_PAD_LEFT);
 		$numbers[] = trim($div->find('span',1)->plaintext);
 		$numbers[] = trim($div->find('span',2)->plaintext);
 		$numbers[] = trim($div->find('span',3)->plaintext);
 		$numbers[] = trim($div->find('span',4)->plaintext);
 		$numbers[] = trim($div->find('span',5)->plaintext);
+		foreach ($numbers as $val) 
+		{
+			if (!is_numeric($val)) exit();
+		}
 		$data['numbers'] = implode(',',$numbers);
 		$data['status'] = 1;
 
-		$row = $this->bc_ettm_record_db->where(array('qishu'=>$data['qishu']))->row_where();
-		if (isset($row['id']) && intval($row['status']) == 0)
+		return $this->_dispatch($play,$data);
+	}
+
+	//11選5
+	public function select5_2($play)
+	{
+		$opts = array(
+			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
+			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
+		);
+		$context = stream_context_create($opts);
+		$url = '';
+		if ($play == 'gd11x5') $url = '78';
+		if ($play == 'jx11x5') $url = '70';
+		if ($play == 'sd11x5') $url = '62';
+		if ($url == '') return;
+		$dom = file_get_html("https://www.ydniu.com/open/$url.html",false,$context);
+
+		$data = $numbers = array();
+		$tr = $dom->find("table.gg_ls",0)->find("tr",1);
+		$qishu = str_replace('期','',trim($tr->find('td',0)->plaintext));
+		$data['qishu'] = substr($qishu,0,8).str_pad(substr($qishu,8),3,'0',STR_PAD_LEFT);
+		$numbers[] = (int)trim($tr->find('td',2)->find('li',0)->plaintext);
+		$numbers[] = (int)trim($tr->find('td',2)->find('li',1)->plaintext);
+		$numbers[] = (int)trim($tr->find('td',2)->find('li',2)->plaintext);
+		$numbers[] = (int)trim($tr->find('td',2)->find('li',3)->plaintext);
+		$numbers[] = (int)trim($tr->find('td',2)->find('li',4)->plaintext);
+		foreach ($numbers as $val) 
 		{
-			$data['id'] = $row['id'];
-			$this->bc_ettm_record_db->update($data);
-			
-			$this->_dispatch($play,$data['qishu']);
+			if (!is_numeric($val)) exit();
 		}
+		$data['numbers'] = implode(',',$numbers);
+		$data['status'] = 1;
+		
+		return $this->_dispatch($play,$data);
 	}
 
 	//PC28
 	public function pc28($play)
 	{
-		$lottery = Bc_ettm_record_model::$lottoryList[$play];
-		$this->bc_ettm_record_db->set_table($lottery['table']);
-
 		$opts = array(
 			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
-			"ssl" => array(
-				"verify_peer"=>false,
-            	"verify_peer_name"=>false,
-			)
+			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
 		);
 		$context = stream_context_create($opts);
 		$dom = file_get_html("http://www.cx997.com/index.php?m=Home&c=WebPc&a=$lottery[url]",false,$context);
@@ -498,55 +583,21 @@ class Grab extends CI_Controller
 		$numbers[] = trim($dom->find('div.ball',0)->plaintext);
 		$numbers[] = trim($dom->find('div.ball',1)->plaintext);
 		$numbers[] = trim($dom->find('div.ball',2)->plaintext);
-		$data['number_one'] = $numbers[0];
-		$data['number_two'] = $numbers[1];
-		$data['number_three'] = $numbers[2];
-		$data['status'] = 1;
-		
-		$total = array_sum($numbers);
-		$data['value_three'] = $total;
-		//大小
-		$data['value_one'] = $total > 13 ? 1:0;
-		//單雙
-		$data['value_two'] = $total % 2 == 0 ? 0:1;
-		//大小-單
-		$data['value_four'] = $total % 2 == 0 ? 0:($total > 13 ? 1:2);
-		//大小-雙
-		$data['value_five'] = $total % 2 == 1 ? 0:($total > 13 ? 1:2);
-		//極大小
-		$data['value_six'] = $total >= 22 ? 1:($total <= 5 ? 2:0);
-		//兩號複選
-		$data['value_seven'] = count(array_flip($numbers)) == 2 ? 1:0;
-		//豹子
-		$data['value_eight'] = count(array_flip($numbers)) == 1 ? 1:0;
-		//龍虎
-		$data['value_nine'] = $numbers[0] > $numbers[2] ? 1:($numbers[0] < $numbers[2] ? 0:2);
-		//三號順子
-		sort($numbers);
-		$data['value_ten'] = $numbers[2] - $numbers[1] == 1 && $numbers[1] - $numbers[0] == 1 ? 1:0;
-		
-		$row = $this->bc_ettm_record_db->where(array('qishu'=>$data['qishu']))->row_where();
-		if (isset($row['id']) && intval($row['status']) == 0)
+		foreach ($numbers as $val) 
 		{
-			$data['id'] = $row['id'];
-			$this->bc_ettm_record_db->update($data);
-			
-			$this->_dispatch($play,$data['qishu']);
+			if (!is_numeric($val)) exit();
 		}
+
+		$data = $this->bc_ettm_record_db->pc28($numbers,$data);
+		$this->_dispatch($play,$data);
 	}
 
 	//PK10 幸運飛艇
 	public function pk10($play)
 	{
-		$lottery = Bc_ettm_record_model::$lottoryList[$play];
-		$this->bc_ettm_record_db->set_table($lottery['table']);
-
 		$opts = array(
 			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
-			"ssl" => array(
-				"verify_peer"=>false,
-            	"verify_peer_name"=>false,
-			)
+			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
 		);
 		$context = stream_context_create($opts);
 		$url = $play == 'bjpk10' ? 'pk10':$play;
@@ -565,73 +616,64 @@ class Grab extends CI_Controller
 		$numbers[] = trim($tr->find('td',1)->find('span',7)->plaintext);
 		$numbers[] = trim($tr->find('td',1)->find('span',8)->plaintext);
 		$numbers[] = trim($tr->find('td',1)->find('span',9)->plaintext);
-		$data['numbers'] = implode(',',$numbers);
-		$data['status'] = 1;
-		
-		//大小
-		$data['value_one'] = ($numbers[0] + $numbers[1]) > 11 ? '大':'小';
-		//單雙
-		$data['value_two'] = ($numbers[0] + $numbers[1]) % 2 == 1 ? '单':'双';
-		//冠軍號
-		$data['value_three'] = $numbers[0];
-		//0-9龍虎
-		$data['value_four'] = $numbers[0] > $numbers[9] ? '龙':'虎';
-		//1-8龍虎
-		$data['value_five'] = $numbers[1] > $numbers[8] ? '龙':'虎';
-		//2-7龍虎
-		$data['value_six'] = $numbers[2] > $numbers[7] ? '龙':'虎';
-		//3-6龍虎
-		$data['value_seven'] = $numbers[3] > $numbers[6] ? '龙':'虎';
-		//4-5龍虎
-		$data['value_eight'] = $numbers[4] > $numbers[5] ? '龙':'虎';
-		
-		$row = $this->bc_ettm_record_db->where(array('qishu'=>$data['qishu']))->row_where();
-		if (isset($row['id']) && intval($row['status']) == 0)
+		foreach ($numbers as $val) 
 		{
-			$data['id'] = $row['id'];
-			$this->bc_ettm_record_db->update($data);
-			
-			$this->_dispatch($play,$data['qishu']);
+			if (!is_numeric($val)) exit();
 		}
+
+		$data = $this->bc_ettm_record_db->pk10($numbers,$data);
+		$this->_dispatch($play,$data);
 	}
 
 	//排列3 福彩3D
 	public function lottery3($play)
 	{
-		$lottery = Bc_ettm_record_model::$lottoryList[$play];
-		$this->bc_ettm_record_db->set_table($lottery['table']);
-
 		$opts = array(
 			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
-			"ssl" => array(
-				"verify_peer"=>false,
-            	"verify_peer_name"=>false,
-			)
+			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
 		);
 		$context = stream_context_create($opts);
-		$url = $play == 'fc3d' ? '3d':$play;
-		$dom = file_get_html("http://caipiao.163.com/award/$url",false,$context);
+		$url = $play;
+		if ($play == 'fc3d') $url = '3d';
+		if ($play == 'pl3') $url = 'p3p5';
+		$dom = file_get_html("http://www.china-lottery.net/$url",false,$context);
 		
-		$div = $dom->find("div.search_zj_left",0);
-		$data['qishu'] = ($play == 'pl3'?'20':'').trim($div->find('span',0)->plaintext);
-		$numbers[] = trim($div->find('p#zj_area',0)->find('span',0)->plaintext);
-		$numbers[] = trim($div->find('p#zj_area',0)->find('span',1)->plaintext);
-		$numbers[] = trim($div->find('p#zj_area',0)->find('span',2)->plaintext);
-		$data['numbers'] = implode(',',$numbers);
-		$data['status'] = 1;
+		$data['qishu'] = trim($dom->find('select#result_issue',0)->find('option',0)->plaintext);
+		$numbers[] = trim($dom->find('span#data_lottery_0',0)->plaintext);
+		$numbers[] = trim($dom->find('span#data_lottery_1',0)->plaintext);
+		$numbers[] = trim($dom->find('span#data_lottery_2',0)->plaintext);
+		$error = false;
+		foreach ($numbers as $val)
+		{
+			if (!is_numeric($val)) $error = true;
+		}
+		//如果號碼有問題 抓另一個網址
+		if ($error)
+		{
+			$numbers = array();
+			$url = $play;
+			if ($play == 'fc3d') $url = '3d';
+			$dom = file_get_html("http://caipiao.163.com/award/$url",false,$context);
+			
+			$div = $dom->find("div.search_zj_left",0);
+			$data['qishu'] = ($play == 'pl3'?'20':'').trim($div->find('span',0)->plaintext);
+			$numbers[] = trim($div->find('p#zj_area',0)->find('span',0)->plaintext);
+			$numbers[] = trim($div->find('p#zj_area',0)->find('span',1)->plaintext);
+			$numbers[] = trim($div->find('p#zj_area',0)->find('span',2)->plaintext);
+			foreach ($numbers as $val)
+			{
+				if (!is_numeric($val)) exit();
+			}
+		}
+		
+		$data = $this->bc_ettm_record_db->lottery3($numbers,$data);
+		$this->_dispatch($play,$data);
+	}
 
-		//個位數大小
-		$data['value_one'] = $numbers[2] > 4 ? 1:0;
-		//個位數單雙
-		$data['value_two'] = $numbers[2] % 2 == 1 ? 1:0;
-		//十位數大小
-		$data['value_three'] = $numbers[1] > 4 ? 1:0;
-		//十位數單雙
-		$data['value_four'] = $numbers[1] % 2 == 1 ? 1:0;
-		//百位數大小
-		$data['value_five'] = $numbers[0] > 4 ? 1:0;
-		//百位數單雙
-		$data['value_six'] = $numbers[0] % 2 == 1 ? 1:0;
+	public function _dispatch($play,$data)
+	{
+		$lottery = Bc_ettm_record_model::$lottoryList[$play];
+		$this->bc_ettm_record_db->set_table($lottery['table']);
 		
 		$row = $this->bc_ettm_record_db->where(array('qishu'=>$data['qishu']))->row_where();
 		if (isset($row['id']) && intval($row['status']) == 0)
@@ -639,25 +681,21 @@ class Grab extends CI_Controller
 			$data['id'] = $row['id'];
 			$this->bc_ettm_record_db->update($data);
 			
-			$this->_dispatch($play,$data['qishu']);
-		}
-	}
+			//寫入最後開彩時間
+			$this->recordinfo_db->update_qishu($play,$data['qishu']);
+			
+			//派彩
+			$url = $this->config->item('lottery_domain')."index.php/rabbitMQ_c/RabbitMQ_open_numbers?key_word={$lottery['crontabs']}&qishu={$data['qishu']}";
+			//file_get_contents($url);
+			
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+			curl_setopt($ch, CURLOPT_URL, $url);
+			$result = curl_exec($ch);
+			curl_close($ch);
 
-	public function _dispatch($play,$qishu)
-	{
-		$lottery = Bc_ettm_record_model::$lottoryList[$play];
-		$keyword = $lottery['crontabs'];
-		//寫入最後開彩時間
-		$this->recordinfo_db->update_qishu($play,$qishu);
-		
-		//派彩
-		$url = $this->config->item('lottery_domain')."index.php/rabbitMQ_c/RabbitMQ_open_numbers?key_word={$keyword}&qishu={$qishu}";
-		//file_get_contents($url);
-		
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-		curl_setopt($ch, CURLOPT_URL, $url);
-		$result = curl_exec($ch);
-		curl_close($ch);
+			return true;
+		}
+		return false;
 	}
 }
