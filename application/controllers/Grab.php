@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Grab extends CI_Controller 
 {
@@ -414,7 +413,7 @@ class Grab extends CI_Controller
 			if (!is_numeric($val)) exit();
 		}
 		
-		$data = $this->bc_ettm_record_db->fast3($numbers,$data); print_r($data); exit();
+		$data = $this->bc_ettm_record_db->fast3($numbers,$data);
 		return $this->_dispatch($play,$data);
 	}
 
