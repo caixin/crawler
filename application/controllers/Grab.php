@@ -25,8 +25,8 @@ class Grab extends CI_Controller
 				$updatetime = $this->recordinfo_db->get_updatetime('hnkl10');
 				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
 				{
-					$run = $this->happy10_2('hnkl10');
-					if (!$run) $this->happy10('hnkl10');
+					$run = $this->happy10('hnkl10');
+					if (!$run) $this->happy10_2('hnkl10');
 				}
 				
 			}
@@ -44,8 +44,8 @@ class Grab extends CI_Controller
 				$updatetime = $this->recordinfo_db->get_updatetime('tjkl10');
 				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
 				{
-					$run = $this->happy10_2('tjkl10');
-					if (!$run) $this->happy10('tjkl10');
+					$run = $this->happy10('tjkl10');
+					if (!$run) $this->happy10_2('tjkl10');
 				}
 			}
 		}
@@ -63,8 +63,8 @@ class Grab extends CI_Controller
 				$updatetime = $this->recordinfo_db->get_updatetime('gxk3');
 				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
 				{
-					$run = $this->fast3_2('gxk3');
-					if (!$run) $this->fast3('gxk3');
+					$run = $this->fast3('gxk3');
+					if (!$run) $this->fast3_2('gxk3');
 				}
 			}
 		}
@@ -81,8 +81,8 @@ class Grab extends CI_Controller
 				$updatetime = $this->recordinfo_db->get_updatetime('shk3');
 				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
 				{
-					$run = $this->fast3_2('shk3');
-					if (!$run) $this->fast3('shk3');
+					$run = $this->fast3('shk3');
+					if (!$run) $this->fast3_2('shk3');
 				}
 			}
 		}
@@ -99,8 +99,8 @@ class Grab extends CI_Controller
 				$updatetime = $this->recordinfo_db->get_updatetime('jsk3');
 				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
 				{
-					$run = $this->fast3_2('jsk3');
-					if (!$run) $this->fast3('jsk3');
+					$run = $this->fast3('jsk3');
+					if (!$run) $this->fast3_2('jsk3');
 				}
 			}
 		}
@@ -161,8 +161,8 @@ class Grab extends CI_Controller
 				$updatetime = $this->recordinfo_db->get_updatetime('gd11x5');
 				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
 				{
-					$run = $this->select5_2('gd11x5');
-					if (!$run) $this->select5('gd11x5');
+					$run = $this->select5('gd11x5');
+					if (!$run) $this->select5_2('gd11x5');
 				}
 			}
 		}
@@ -179,8 +179,8 @@ class Grab extends CI_Controller
 				$updatetime = $this->recordinfo_db->get_updatetime('jx11x5');
 				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
 				{
-					$run = $this->select5_2('jx11x5');
-					if (!$run) $this->select5('jx11x5');
+					$run = $this->select5('jx11x5');
+					if (!$run) $this->select5_2('jx11x5');
 				}
 			}
 		}
@@ -197,8 +197,8 @@ class Grab extends CI_Controller
 				$updatetime = $this->recordinfo_db->get_updatetime('sd11x5');
 				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
 				{
-					$run = $this->select5_2('sd11x5');
-					if (!$run) $this->select5('sd11x5');
+					$run = $this->select5('sd11x5');
+					if (!$run) $this->select5_2('sd11x5');
 				}
 			}
 		}
