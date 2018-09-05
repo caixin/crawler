@@ -12,6 +12,32 @@ class Grab extends CI_Controller
         $this->load->model('Recordinfo_model', 'recordinfo_db');
 	}
 
+	public function testmqtt()
+	{
+
+		// 发送给订阅号信息,创建socket,无sam队列
+		$server = "54.250.167.22";     // 服务代理地址(mqtt服务端地址)
+		$port = 1883;                     // 通信端口
+		$username = "tladmin";                   // 用户名(如果需要)
+		$password = "zxc123";                   // 密码(如果需要
+		$client_id = "clientx9293670xxctr"; // 设置你的连接客户端id
+
+		$this->load->library('phpMQTT',array(
+			'address' => $server,
+			'port' => $port,
+			'clientid' => $client_id,
+		));
+		
+		if ($this->phpMQTT->connect(true, NULL)) { 
+			//如果创建链接成功
+			$this->phpMQTT->publish("xxx3809293670ctr", "setr=3xxxxxxxxx", 0); 
+			// 发送到 xxx3809293670ctr 的主题 一个信息 内容为 setr=3xxxxxxxxx Qos 为 0 
+			$this->phpMQTT->close();    //发送后关闭链接
+		} else {
+			echo "Time out!\n"; 
+		}
+	}
+
 	public function index()
 	{
 		$minute = (date('H') * 60) + date('i');
@@ -75,8 +101,8 @@ class Grab extends CI_Controller
 		}
 		try
 		{
-			//上海快3 開獎時間:08:58~21:08 10分鐘開一次
-			if ($minute > 538 && $minute < 1278)
+			//上海快3 開獎時間:08:58~22:28 10分鐘開一次
+			if ($minute > 538 && $minute < 1358)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('shk3');
 				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
@@ -93,8 +119,8 @@ class Grab extends CI_Controller
 		}
 		try
 		{
-			//江蘇快3 開獎時間:08:40~21:10 10分鐘開一次
-			if ($minute > 520 && $minute < 1280)
+			//江蘇快3 開獎時間:08:40~22:10 10分鐘開一次
+			if ($minute > 520 && $minute < 1340)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('jsk3');
 				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
@@ -141,7 +167,7 @@ class Grab extends CI_Controller
 		try
 		{
 			//天津時時彩 開獎時間:09:10~23:00 10分鐘開一次
-			if ($minute > 550 && $minute < 1390)
+			if ($minute > 550 && $minute < 1400)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('tjssc');
 				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->tat2('tjssc');
@@ -191,8 +217,8 @@ class Grab extends CI_Controller
 		}
 		try
 		{
-			//山東11選5 開獎時間:09:05~21:55 10分鐘開一次
-			if ($minute > 545 && $minute < 1325)
+			//山東11選5 開獎時間:08:35~22:55 10分鐘開一次
+			if ($minute > 515 && $minute < 1385)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('sd11x5');
 				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
