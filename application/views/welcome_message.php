@@ -1,7 +1,6 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-?><!DOCTYPE html>
-<html lang="en">
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+<!DOCTYPE html>
+<html>
 <head>
 	<meta charset="utf-8">
 	<title>Welcome to CodeIgniter</title>
@@ -84,6 +83,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds. <?php echo  (ENVIRONMENT === 'development') ?  'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?></p>
 </div>
-
 </body>
+<script>
+var wsServer = 'ws://localhost:8080';
+var websocket = new WebSocket(wsServer);
+
+websocket.onopen = function (evt) {
+    console.log(evt);
+    console.log("成功連接到 WebSocket 服務");
+};
+ 
+websocket.onclose = function (evt) {
+    console.log("關閉連接服務");
+};
+ 
+websocket.onmessage = function (evt) {
+    console.log('接收伺服器數據: ' + evt.data);
+};
+ 
+websocket.onerror = function (evt, e) {
+    console.log('發生錯誤: ' + evt.data);
+};
+</script>
 </html>
