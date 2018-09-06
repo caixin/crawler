@@ -26,7 +26,7 @@ class Swoole extends CI_Controller
 		
 		// 今天 WebSocket 連接關閉事件
 		$ws->on('close', function ($ws, $fd) {
-			unisset($user[$fd]);
+			unset($user[$fd]);
 			foreach ($user as $key => $name)
 			{
 				$ws->push($key, json_encode($user));
