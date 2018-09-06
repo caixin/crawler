@@ -4,21 +4,28 @@ class Swoole extends CI_Controller
 {
 	public function index()
 	{
-		$user = array();
+		$GLOBALS['swoole_user'] = array();
         // 建立 websocket 物件，監聽 0.0.0.0:8080 連接埠
 		$ws = new swoole_websocket_server("0.0.0.0", 8080); // 0.0.0.0 等於 localhost
 		
 		// 監聽 WebSocket 連接打開事件
 		$ws->on('open', function ($ws, $request) {
-			$user[$request->fd] = 'name'.$request->fd;
-			$ws->push($request->fd, json_encode($user));
+			$$GLOBALS['swoole_user'][$request->fd] = 'name'.$request->fd;
+
+			
+			foreach ($$GLOBALS['swoole_user'] as $fd => $name)
+			{
+				$ws->push($request->fd, json_encode($user));
+
+			}
+			
 		});
 		
 		// 監聽 WebSocket 訊息事件
 		$ws->on('message', function ($ws, $frame) {
 			echo "Message: {$frame->data}\n";
 
-			foreach ($user as $fd => $name)
+			foreach ($$GLOBALS['swoole_user'] as $fd => $name)
 			{
 				$ws->push($fd, json_encode($user));
 			}
@@ -26,8 +33,8 @@ class Swoole extends CI_Controller
 		
 		// 今天 WebSocket 連接關閉事件
 		$ws->on('close', function ($ws, $fd) {
-			unset($user[$fd]);
-			foreach ($user as $key => $name)
+			unset($$GLOBALS['swoole_user'][$fd]);
+			foreach ($$GLOBALS['swoole_user'] as $key => $name)
 			{
 				$ws->push($key, json_encode($user));
 			}
