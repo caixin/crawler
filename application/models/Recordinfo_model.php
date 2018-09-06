@@ -67,9 +67,8 @@ class Recordinfo_model extends MY_Model
 
     public function get_updatetime($type)
     {
-        $servername = $_SERVER["SERVER_NAME"];
         $data = array(
-            'servername' => $servername,
+            //'servername' => $_SERVER["SERVER_NAME"],
             'type' => $type,
         );
 
@@ -79,9 +78,8 @@ class Recordinfo_model extends MY_Model
 
     public function update_qishu($type,$qishu)
     {
-        $servername = $_SERVER["SERVER_NAME"];
         $data = array(
-            'servername' => $servername,
+            //'servername' => $_SERVER["SERVER_NAME"],
             'type' => $type,
         );
 
