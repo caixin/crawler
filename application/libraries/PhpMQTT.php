@@ -1,6 +1,6 @@
 <?php
 
-class phpMQTT {
+class PhpMQTT {
 
 	private $socket; 			/* holds the socket	*/
 	private $msgid = 1;			/* counter for message id */

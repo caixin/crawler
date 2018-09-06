@@ -290,6 +290,7 @@ class Grab extends CI_Controller
 		catch (Exception $e)
 		{
 			mqtt_publish("home/web/crawler", "fc3d Error! Message:".$e->getMessage());
+			log_message('error',$e->getMessage());
 		}
 	}
 
@@ -575,7 +576,11 @@ class Grab extends CI_Controller
 			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
 		);
 		$context = stream_context_create($opts);
-		$dom = file_get_html("http://www.cx997.com/index.php?m=Home&c=WebPc&a=$lottery[url]",false,$context);
+		$url = '';
+		if ($play == 'canadapc28') $url = 'dt_result_jnd';
+		if ($play == 'bjpc28') $url = 'dt_result';
+		if ($url == '') return false;
+		$dom = file_get_html("http://www.cx997.com/index.php?m=Home&c=WebPc&a=$url",false,$context);
 
 		$data = $numbers = array();
 		$data['qishu'] = trim($dom->find('span#pc_tt',0)->plaintext);
@@ -586,7 +591,6 @@ class Grab extends CI_Controller
 		{
 			if (!is_numeric($val)) exit();
 		}
-
 		$data = $this->bc_ettm_record_db->pc28($numbers,$data);
 		$this->_dispatch($play,$data);
 	}
