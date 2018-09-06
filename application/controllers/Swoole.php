@@ -18,6 +18,14 @@ class Swoole extends CI_Controller
 			}
 		});
 		
+		// 監聽 WebSocket 訊息事件
+		$ws->on('message', function ($ws, $frame) {
+			foreach ($GLOBALS['swoole_user'] as $fd => $name)
+			{
+				$ws->push($fd, json_encode($GLOBALS['swoole_user']));
+			}
+		});
+		
 		// 今天 WebSocket 連接關閉事件
 		$ws->on('close', function ($ws, $fd) {
 			unset($GLOBALS['swoole_user'][$fd]);
@@ -25,7 +33,6 @@ class Swoole extends CI_Controller
 			{
 				$ws->push($key, json_encode($GLOBALS['swoole_user']));
 			}
-			echo "client-{$fd} is closed\n";
 		});
 		
 		$ws->start();
