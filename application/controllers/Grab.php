@@ -6,36 +6,11 @@ class Grab extends CI_Controller
     {
 		parent::__construct();
 		
-        set_time_limit(600);
+        set_time_limit(0);
 		$this->load->library('Simple_html_dom');
+		$this->load->helper('mqtt');
         $this->load->model('Bc_ettm_record_model', 'bc_ettm_record_db');
         $this->load->model('Recordinfo_model', 'recordinfo_db');
-	}
-
-	public function testmqtt()
-	{
-
-		// 发送给订阅号信息,创建socket,无sam队列
-		$server = "54.250.167.22";     // 服务代理地址(mqtt服务端地址)
-		$port = 1883;                     // 通信端口
-		$username = "tladmin";                   // 用户名(如果需要)
-		$password = "zxc123";                   // 密码(如果需要
-		$client_id = "clientx9293670xxctr"; // 设置你的连接客户端id
-
-		$this->load->library('phpMQTT',array(
-			'address' => $server,
-			'port' => $port,
-			'clientid' => $client_id,
-		));
-		
-		if ($this->phpMQTT->connect(true, NULL)) { 
-			//如果创建链接成功
-			$this->phpMQTT->publish("xxx3809293670ctr", "setr=3xxxxxxxxx", 0); 
-			// 发送到 xxx3809293670ctr 的主题 一个信息 内容为 setr=3xxxxxxxxx Qos 为 0 
-			$this->phpMQTT->close();    //发送后关闭链接
-		} else {
-			echo "Time out!\n"; 
-		}
 	}
 
 	public function index()
@@ -59,7 +34,7 @@ class Grab extends CI_Controller
 		}
 		catch (Exception $e)
 		{
-			log_message('error',"hnkl10 Error!");
+			mqtt_publish("home/web/crawler", "hnkl10 Error! Message:".$e->getMessage());
 			log_message('error',$e->getMessage());
 		}
 		try
@@ -77,7 +52,7 @@ class Grab extends CI_Controller
 		}
 		catch (Exception $e)
 		{
-			log_message('error',"tjkl10 Error!");
+			mqtt_publish("home/web/crawler", "tjkl10 Error! Message:".$e->getMessage());
 			log_message('error',$e->getMessage());
 		}
 
@@ -96,13 +71,13 @@ class Grab extends CI_Controller
 		}
 		catch (Exception $e)
 		{
-			log_message('error',"gxk3 Error!");
+			mqtt_publish("home/web/crawler", "gxk3 Error! Message:".$e->getMessage());
 			log_message('error',$e->getMessage());
 		}
 		try
 		{
-			//上海快3 開獎時間:08:58~22:28 10分鐘開一次
-			if ($minute > 538 && $minute < 1358)
+			//上海快3 開獎時間:08:58~21:08 10分鐘開一次
+			if ($minute > 538 && $minute < 1278)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('shk3');
 				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
@@ -114,13 +89,13 @@ class Grab extends CI_Controller
 		}
 		catch (Exception $e)
 		{
-			log_message('error',"shk3 Error!");
+			mqtt_publish("home/web/crawler", "shk3 Error! Message:".$e->getMessage());
 			log_message('error',$e->getMessage());
 		}
 		try
 		{
-			//江蘇快3 開獎時間:08:40~22:10 10分鐘開一次
-			if ($minute > 520 && $minute < 1340)
+			//江蘇快3 開獎時間:08:40~21:10 10分鐘開一次
+			if ($minute > 520 && $minute < 1280)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('jsk3');
 				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
@@ -132,7 +107,7 @@ class Grab extends CI_Controller
 		}
 		catch (Exception $e)
 		{
-			log_message('error',"jsk3 Error!");
+			mqtt_publish("home/web/crawler", "jsk3 Error! Message:".$e->getMessage());
 			log_message('error',$e->getMessage());
 		}
 		
@@ -147,7 +122,7 @@ class Grab extends CI_Controller
 		}
 		catch (Exception $e)
 		{
-			log_message('error',"xjssc Error!");
+			mqtt_publish("home/web/crawler", "xjssc Error! Message:".$e->getMessage());
 			log_message('error',$e->getMessage());
 		}
 		try
@@ -161,13 +136,13 @@ class Grab extends CI_Controller
 		}
 		catch (Exception $e)
 		{
-			log_message('error',"cqssc Error!");
+			mqtt_publish("home/web/crawler", "cqssc Error! Message:".$e->getMessage());
 			log_message('error',$e->getMessage());
 		}
 		try
 		{
 			//天津時時彩 開獎時間:09:10~23:00 10分鐘開一次
-			if ($minute > 550 && $minute < 1400)
+			if ($minute > 550 && $minute < 1390)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('tjssc');
 				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->tat2('tjssc');
@@ -175,7 +150,7 @@ class Grab extends CI_Controller
 		}
 		catch (Exception $e)
 		{
-			log_message('error',"tjssc Error!");
+			mqtt_publish("home/web/crawler", "tjssc Error! Message:".$e->getMessage());
 			log_message('error',$e->getMessage());
 		}
 
@@ -194,7 +169,7 @@ class Grab extends CI_Controller
 		}
 		catch (Exception $e)
 		{
-			log_message('error',"gd11x5 Error!");
+			mqtt_publish("home/web/crawler", "gd11x5 Error! Message:".$e->getMessage());
 			log_message('error',$e->getMessage());
 		}
 		try
@@ -212,13 +187,13 @@ class Grab extends CI_Controller
 		}
 		catch (Exception $e)
 		{
-			log_message('error',"jx11x5 Error!");
+			mqtt_publish("home/web/crawler", "jx11x5 Error! Message:".$e->getMessage());
 			log_message('error',$e->getMessage());
 		}
 		try
 		{
-			//山東11選5 開獎時間:08:35~22:55 10分鐘開一次
-			if ($minute > 515 && $minute < 1385)
+			//山東11選5 開獎時間:09:05~21:55 10分鐘開一次
+			if ($minute > 545 && $minute < 1325)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('sd11x5');
 				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
@@ -230,7 +205,7 @@ class Grab extends CI_Controller
 		}
 		catch (Exception $e)
 		{
-			log_message('error',"sd11x5 Error!");
+			mqtt_publish("home/web/crawler", "sd11x5 Error! Message:".$e->getMessage());
 			log_message('error',$e->getMessage());
 		}
 		
@@ -242,7 +217,7 @@ class Grab extends CI_Controller
 		}
 		catch (Exception $e)
 		{
-			log_message('error',"canadapc28 Error!");
+			mqtt_publish("home/web/crawler", "canadapc28 Error! Message:".$e->getMessage());
 			log_message('error',$e->getMessage());
 		}
 		try
@@ -256,7 +231,7 @@ class Grab extends CI_Controller
 		}
 		catch (Exception $e)
 		{
-			log_message('error',"bjpc28 Error!");
+			mqtt_publish("home/web/crawler", "bjpc28 Error! Message:".$e->getMessage());
 			log_message('error',$e->getMessage());
 		}
 		
@@ -271,7 +246,7 @@ class Grab extends CI_Controller
 		}
 		catch (Exception $e)
 		{
-			log_message('error',"xyft Error!");
+			mqtt_publish("home/web/crawler", "xyft Error! Message:".$e->getMessage());
 			log_message('error',$e->getMessage());
 		}
 		try
@@ -285,7 +260,7 @@ class Grab extends CI_Controller
 		}
 		catch (Exception $e)
 		{
-			log_message('error',"bjpk10 Error!");
+			mqtt_publish("home/web/crawler", "bjpk10 Error! Message:".$e->getMessage());
 			log_message('error',$e->getMessage());
 		}
 
@@ -300,7 +275,7 @@ class Grab extends CI_Controller
 		}
 		catch (Exception $e)
 		{
-			log_message('error',"pl3 Error!");
+			mqtt_publish("home/web/crawler", "pl3 Error! Message:".$e->getMessage());
 			log_message('error',$e->getMessage());
 		}
 		try
@@ -314,8 +289,7 @@ class Grab extends CI_Controller
 		}
 		catch (Exception $e)
 		{
-			log_message('error',"fc3d Error!");
-			log_message('error',$e->getMessage());
+			mqtt_publish("home/web/crawler", "fc3d Error! Message:".$e->getMessage());
 		}
 	}
 
