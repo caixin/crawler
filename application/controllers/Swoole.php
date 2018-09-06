@@ -10,12 +10,12 @@ class Swoole extends CI_Controller
 		
 		// 監聽 WebSocket 連接打開事件
 		$ws->on('open', function ($ws, $request) {
-			$$GLOBALS['swoole_user'][$request->fd] = 'name'.$request->fd;
+			$GLOBALS['swoole_user'][$request->fd] = 'name'.$request->fd;
 
 			
-			foreach ($$GLOBALS['swoole_user'] as $fd => $name)
+			foreach ($GLOBALS['swoole_user'] as $fd => $name)
 			{
-				$ws->push($request->fd, json_encode($user));
+				$ws->push($request->fd, json_encode($GLOBALS['swoole_user']));
 
 			}
 			
@@ -25,18 +25,18 @@ class Swoole extends CI_Controller
 		$ws->on('message', function ($ws, $frame) {
 			echo "Message: {$frame->data}\n";
 
-			foreach ($$GLOBALS['swoole_user'] as $fd => $name)
+			foreach ($GLOBALS['swoole_user'] as $fd => $name)
 			{
-				$ws->push($fd, json_encode($user));
+				$ws->push($fd, json_encode($GLOBALS['swoole_user']));
 			}
 		});
 		
 		// 今天 WebSocket 連接關閉事件
 		$ws->on('close', function ($ws, $fd) {
-			unset($$GLOBALS['swoole_user'][$fd]);
-			foreach ($$GLOBALS['swoole_user'] as $key => $name)
+			unset($GLOBALS['swoole_user'][$fd]);
+			foreach ($GLOBALS['swoole_user'] as $key => $name)
 			{
-				$ws->push($key, json_encode($user));
+				$ws->push($key, json_encode($GLOBALS['swoole_user']));
 			}
 			echo "client-{$fd} is closed\n";
 		});
