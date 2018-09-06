@@ -9,7 +9,7 @@ class Swoole extends CI_Controller
 		
 		// 監聽 WebSocket 連接打開事件
 		$ws->on('open', function ($ws, $request) {
-			var_dump($request->fd, $request->get, $request->server);
+			print_r($request);
 			$ws->push($request->fd, "hello, welcome\n");
 		});
 		
