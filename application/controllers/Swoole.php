@@ -12,19 +12,6 @@ class Swoole extends CI_Controller
 		$ws->on('open', function ($ws, $request) {
 			$GLOBALS['swoole_user'][$request->fd] = 'name'.$request->fd;
 
-			
-			foreach ($GLOBALS['swoole_user'] as $fd => $name)
-			{
-				$ws->push($request->fd, json_encode($GLOBALS['swoole_user']));
-
-			}
-			
-		});
-		
-		// 監聽 WebSocket 訊息事件
-		$ws->on('message', function ($ws, $frame) {
-			echo "Message: {$frame->data}\n";
-
 			foreach ($GLOBALS['swoole_user'] as $fd => $name)
 			{
 				$ws->push($fd, json_encode($GLOBALS['swoole_user']));
