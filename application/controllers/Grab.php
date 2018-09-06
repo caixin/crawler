@@ -319,7 +319,7 @@ class Grab extends CI_Controller
 		$numbers[] = trim($div->find('span',8)->plaintext);
 		foreach ($numbers as $val)
 		{
-			if (!is_numeric($val)) exit();
+			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); exit(); }
 		}
 
 		$data = $this->bc_ettm_record_db->happy10($numbers,$data);
@@ -353,7 +353,7 @@ class Grab extends CI_Controller
 		$numbers[] = (int)trim($tr->find('td',1)->find('li',7)->plaintext);
 		foreach ($numbers as $val)
 		{
-			if (!is_numeric($val)) exit();
+			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); exit(); }
 		}
 
 		$data = $this->bc_ettm_record_db->happy10($numbers,$data);
@@ -380,7 +380,7 @@ class Grab extends CI_Controller
 		$numbers[] = trim($div->find('span',3)->plaintext);
 		foreach ($numbers as $val) 
 		{
-			if (!is_numeric($val)) exit();
+			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); exit(); }
 		}
 		
 		$data = $this->bc_ettm_record_db->fast3($numbers,$data);
@@ -411,7 +411,7 @@ class Grab extends CI_Controller
 		$numbers[] = (int)trim($tr->find('td',2)->find('li',2)->plaintext);
 		foreach ($numbers as $val) 
 		{
-			if (!is_numeric($val)) exit();
+			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); exit(); }
 		}
 		
 		$data = $this->bc_ettm_record_db->fast3($numbers,$data);
@@ -439,7 +439,7 @@ class Grab extends CI_Controller
 		$numbers[] = trim($div->find('i',4)->plaintext);
 		foreach ($numbers as $val) 
 		{
-			if (!is_numeric($val)) exit();
+			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); exit(); }
 		}
 		$data = $this->bc_ettm_record_db->tat($numbers,$data);
 		$this->_dispatch('xjssc',$data);
@@ -466,7 +466,7 @@ class Grab extends CI_Controller
 		$numbers[] = trim($div->find('div.cont',1)->find('span',4)->plaintext);
 		foreach ($numbers as $val) 
 		{
-			if (!is_numeric($val)) exit();
+			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); exit(); }
 		}
 
 		$data = $this->bc_ettm_record_db->tat($numbers,$data);
@@ -496,7 +496,7 @@ class Grab extends CI_Controller
 		$numbers[] = trim($div->find('span',5)->plaintext);
 		foreach ($numbers as $val) 
 		{
-			if (!is_numeric($val)) exit();
+			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); exit(); }
 		}
 
 		$data = $this->bc_ettm_record_db->tat($numbers,$data);
@@ -526,7 +526,7 @@ class Grab extends CI_Controller
 		$numbers[] = trim($div->find('span',5)->plaintext);
 		foreach ($numbers as $val) 
 		{
-			if (!is_numeric($val)) exit();
+			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); exit(); }
 		}
 		$data['numbers'] = implode(',',$numbers);
 		$data['status'] = 1;
@@ -560,7 +560,7 @@ class Grab extends CI_Controller
 		$numbers[] = (int)trim($tr->find('td',2)->find('li',4)->plaintext);
 		foreach ($numbers as $val) 
 		{
-			if (!is_numeric($val)) exit();
+			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); exit(); }
 		}
 		$data['numbers'] = implode(',',$numbers);
 		$data['status'] = 1;
@@ -589,7 +589,7 @@ class Grab extends CI_Controller
 		$numbers[] = trim($dom->find('div.ball',2)->plaintext);
 		foreach ($numbers as $val) 
 		{
-			if (!is_numeric($val)) exit();
+			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); exit(); }
 		}
 		$data = $this->bc_ettm_record_db->pc28($numbers,$data);
 		$this->_dispatch($play,$data);
@@ -621,7 +621,7 @@ class Grab extends CI_Controller
 		$numbers[] = trim($tr->find('td',1)->find('span',9)->plaintext);
 		foreach ($numbers as $val) 
 		{
-			if (!is_numeric($val)) exit();
+			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); exit(); }
 		}
 
 		$data = $this->bc_ettm_record_db->pk10($numbers,$data);
@@ -665,7 +665,7 @@ class Grab extends CI_Controller
 			$numbers[] = trim($div->find('p#zj_area',0)->find('span',2)->plaintext);
 			foreach ($numbers as $val)
 			{
-				if (!is_numeric($val)) exit();
+				if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); exit(); }
 			}
 		}
 		
