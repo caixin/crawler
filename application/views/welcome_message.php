@@ -85,7 +85,7 @@ var wsServer = 'ws://192.168.50.205:8080';
 var websocket = new WebSocket(wsServer);
 
 websocket.onopen = function (evt) {
-    console.log(evt);
+    //console.log(evt);
     console.log("成功連接到 WebSocket 服務");
 };
  
