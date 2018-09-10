@@ -29,7 +29,6 @@ class Grab extends CI_Controller
 					$run = $this->happy10('hnkl10');
 					if (!$run) $this->happy10_2('hnkl10');
 				}
-				
 			}
 		}
 		catch (Exception $e)
@@ -76,8 +75,8 @@ class Grab extends CI_Controller
 		}
 		try
 		{
-			//上海快3 開獎時間:08:58~21:08 10分鐘開一次
-			if ($minute > 538 && $minute < 1278)
+			//上海快3 開獎時間:08:58~22:28 10分鐘開一次
+			if ($minute > 538 && $minute < 1358)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('shk3');
 				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
@@ -94,8 +93,8 @@ class Grab extends CI_Controller
 		}
 		try
 		{
-			//江蘇快3 開獎時間:08:40~21:10 10分鐘開一次
-			if ($minute > 520 && $minute < 1280)
+			//江蘇快3 開獎時間:08:40~22:10 10分鐘開一次
+			if ($minute > 520 && $minute < 1340)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('jsk3');
 				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
@@ -192,8 +191,8 @@ class Grab extends CI_Controller
 		}
 		try
 		{
-			//山東11選5 開獎時間:09:05~21:55 10分鐘開一次
-			if ($minute > 545 && $minute < 1325)
+			//山東11選5 開獎時間:08:35~22:55 10分鐘開一次
+			if ($minute > 515 && $minute < 1385)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('sd11x5');
 				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
@@ -267,7 +266,7 @@ class Grab extends CI_Controller
 			if ($minute > 547 || $minute < 7)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('bjpk10');
-				if (date('Y-m-d H:i:s',time()-3*60) >= $updatetime)
+				if (date('Y-m-d H:i:s',time()-2*60) >= $updatetime)
 				{
 					$run = $this->pk10('bjpk10');
 					if (!$run) $this->pk10_2('bjpk10');
