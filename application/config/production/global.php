@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$config['lottery_domain'] = 'http://bcmanager.skylongtech.com/';
+$config['lottery_domain'] = 'http://oa.skylongtech.com/';
 
 $config['mqtt_server'] = '54.250.167.22';
 $config['mqtt_port'] = 1883;
