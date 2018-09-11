@@ -54,7 +54,7 @@
  * NOTE: If you change these, also change the error_reporting() code below
  */
 
-if (isset($_SERVER["SERVER_NAME"]) && $_SERVER["SERVER_NAME"] == 'crawler2') {
+if (isset($_SERVER["SERVER_NAME"]) && $_SERVER["SERVER_NAME"] == 'crawler3') {
 	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
 } else {
 	define('ENVIRONMENT', 'production');
