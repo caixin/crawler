@@ -282,10 +282,10 @@ class Grab extends CI_Controller
 		try
 		{
 			//排列3 開獎時間: 20:30
-			if ($minute > 1230 && $minute < 1250)
+			if ($minute > 1230 && $minute < 1350)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('pl3');
-				if (date('Y-m-d H:i:s',time()-20*60) >= $updatetime) $this->lottery3('pl3');
+				if (date('Y-m-d H:i:s',time()-120*60) >= $updatetime) $this->lottery3('pl3');
 			}
 		}
 		catch (Exception $e)
@@ -296,10 +296,10 @@ class Grab extends CI_Controller
 		try
 		{
 			//福彩3D 開獎時間: 21:15
-			if ($minute > 1275 && $minute < 1295)
+			if ($minute > 1275 && $minute < 1395)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('fc3d');
-				if (date('Y-m-d H:i:s',time()-20*60) >= $updatetime) $this->lottery3('fc3d');
+				if (date('Y-m-d H:i:s',time()-120*60) >= $updatetime) $this->lottery3('fc3d');
 			}
 		}
 		catch (Exception $e)
