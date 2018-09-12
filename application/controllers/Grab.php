@@ -184,366 +184,421 @@ class Grab extends CI_Controller
 	//快樂10分
 	public function happy10($play)
 	{
-		$opts = array(
-			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
-			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
-		);
-		$context = stream_context_create($opts);
-		$dom = file_get_html("https://pub.icaile.com/$play",false,$context);
+		try {
+			$opts = array(
+				'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
+				"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
+			);
+			$context = stream_context_create($opts);
+			$dom = file_get_html("https://pub.icaile.com/$play",false,$context);
 
-		$data = $numbers = array();
-		foreach (array('table1','table2','table3') as $table)
-		{
-			$tr = $dom->find("table.$table tr");
-			foreach ($tr as $k => $v)
+			$data = $numbers = array();
+			foreach (array('table1','table2','table3') as $table)
 			{
-				if ($k == 0) continue;
-				if (count($v->find('td',1)->children()) < 8) break;
+				$tr = $dom->find("table.$table tr");
+				foreach ($tr as $k => $v)
+				{
+					if ($k == 0) continue;
+					if (count($v->find('td',1)->children()) < 8) break;
 
-				$numbers = array();
-				$qishu = explode('-',trim($v->find('td',0)->plaintext));
-				$data['qishu'] = '20'.$qishu[0].str_pad(intval($qishu[1]),2,'0',STR_PAD_LEFT);
-				$numbers[] = (int)trim($v->find('td',1)->find('em',0)->plaintext);
-				$numbers[] = (int)trim($v->find('td',1)->find('em',1)->plaintext);
-				$numbers[] = (int)trim($v->find('td',1)->find('em',2)->plaintext);
-				$numbers[] = (int)trim($v->find('td',1)->find('em',3)->plaintext);
-				$numbers[] = (int)trim($v->find('td',1)->find('em',4)->plaintext);
-				$numbers[] = (int)trim($v->find('td',1)->find('em',5)->plaintext);
-				$numbers[] = (int)trim($v->find('td',1)->find('em',6)->plaintext);
-				$numbers[] = (int)trim($v->find('td',1)->find('em',7)->plaintext);
+					$numbers = array();
+					$qishu = explode('-',trim($v->find('td',0)->plaintext));
+					$data['qishu'] = '20'.$qishu[0].str_pad(intval($qishu[1]),2,'0',STR_PAD_LEFT);
+					$numbers[] = (int)trim($v->find('td',1)->find('em',0)->plaintext);
+					$numbers[] = (int)trim($v->find('td',1)->find('em',1)->plaintext);
+					$numbers[] = (int)trim($v->find('td',1)->find('em',2)->plaintext);
+					$numbers[] = (int)trim($v->find('td',1)->find('em',3)->plaintext);
+					$numbers[] = (int)trim($v->find('td',1)->find('em',4)->plaintext);
+					$numbers[] = (int)trim($v->find('td',1)->find('em',5)->plaintext);
+					$numbers[] = (int)trim($v->find('td',1)->find('em',6)->plaintext);
+					$numbers[] = (int)trim($v->find('td',1)->find('em',7)->plaintext);
+				}
 			}
-		}
 
-		foreach ($numbers as $val)
-		{
-			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
-		}
+			foreach ($numbers as $val)
+			{
+				if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
+			}
 
-		$data = $this->bc_ettm_record_db->happy10($numbers,$data);
-		return $this->_dispatch($play,$data);
+			$data = $this->bc_ettm_record_db->happy10($numbers,$data);
+			return $this->_dispatch($play,$data);
+		} catch (Exception $e) {
+			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			log_message('error',$e->getMessage());
+		}
 	}
 	
 	//快樂10分-2
 	public function happy10_2($play)
 	{
-		$opts = array(
-			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
-			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
-		);
-		$context = stream_context_create($opts);
-		$url = '';
-		if ($play == 'hnkl10') $url = '135';
-		if ($play == 'tjkl10') $url = '132';
-		if ($url == '') return;
-		$dom = file_get_html("https://www.ydniu.com/open/$url.html",false,$context);
+		try {
+			$opts = array(
+				'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
+				"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
+			);
+			$context = stream_context_create($opts);
+			$url = '';
+			if ($play == 'hnkl10') $url = '135';
+			if ($play == 'tjkl10') $url = '132';
+			if ($url == '') return;
+			$dom = file_get_html("https://www.ydniu.com/open/$url.html",false,$context);
 
-		$data = $numbers = array();
-		$tr = $dom->find("table.gg_ls",0)->find("tr",1);
-		$data['qishu'] = str_replace('期','',trim($tr->find('td',0)->plaintext));
-		$numbers[] = (int)trim($tr->find('td',1)->find('li',0)->plaintext);
-		$numbers[] = (int)trim($tr->find('td',1)->find('li',1)->plaintext);
-		$numbers[] = (int)trim($tr->find('td',1)->find('li',2)->plaintext);
-		$numbers[] = (int)trim($tr->find('td',1)->find('li',3)->plaintext);
-		$numbers[] = (int)trim($tr->find('td',1)->find('li',4)->plaintext);
-		$numbers[] = (int)trim($tr->find('td',1)->find('li',5)->plaintext);
-		$numbers[] = (int)trim($tr->find('td',1)->find('li',6)->plaintext);
-		$numbers[] = (int)trim($tr->find('td',1)->find('li',7)->plaintext);
-		foreach ($numbers as $val)
-		{
-			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
+			$data = $numbers = array();
+			$tr = $dom->find("table.gg_ls",0)->find("tr",1);
+			$data['qishu'] = str_replace('期','',trim($tr->find('td',0)->plaintext));
+			$numbers[] = (int)trim($tr->find('td',1)->find('li',0)->plaintext);
+			$numbers[] = (int)trim($tr->find('td',1)->find('li',1)->plaintext);
+			$numbers[] = (int)trim($tr->find('td',1)->find('li',2)->plaintext);
+			$numbers[] = (int)trim($tr->find('td',1)->find('li',3)->plaintext);
+			$numbers[] = (int)trim($tr->find('td',1)->find('li',4)->plaintext);
+			$numbers[] = (int)trim($tr->find('td',1)->find('li',5)->plaintext);
+			$numbers[] = (int)trim($tr->find('td',1)->find('li',6)->plaintext);
+			$numbers[] = (int)trim($tr->find('td',1)->find('li',7)->plaintext);
+			foreach ($numbers as $val)
+			{
+				if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
+			}
+
+			$data = $this->bc_ettm_record_db->happy10($numbers,$data);
+			return $this->_dispatch($play,$data);
+		} catch (Exception $e) {
+			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			log_message('error',$e->getMessage());
 		}
-
-		$data = $this->bc_ettm_record_db->happy10($numbers,$data);
-		return $this->_dispatch($play,$data);
 	}
 
 	//快3
 	public function fast3($play)
 	{
-		$opts = array(
-			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
-			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
-		);
-		$context = stream_context_create($opts);
-		$dom = file_get_html("https://pub.icaile.com/$play",false,$context);
-		
-		$data = $numbers = array();
-		foreach (array('table1','table2','table3') as $table)
-		{
-			$tr = $dom->find("table.$table tr");
-			foreach ($tr as $k => $v)
+		try {
+			$opts = array(
+				'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
+				"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
+			);
+			$context = stream_context_create($opts);
+			$dom = file_get_html("https://pub.icaile.com/$play",false,$context);
+			
+			$data = $numbers = array();
+			foreach (array('table1','table2','table3') as $table)
 			{
-				if ($k == 0) continue;
-				if (count($v->find('td',1)->children()) < 3) break;
+				$tr = $dom->find("table.$table tr");
+				foreach ($tr as $k => $v)
+				{
+					if ($k == 0) continue;
+					if (count($v->find('td',1)->children()) < 3) break;
 
-				$numbers = array();
-				$qishu = explode('-',trim($v->find('td',0)->plaintext));
-				$data['qishu'] = '20'.$qishu[0].str_pad(intval($qishu[1]),3,'0',STR_PAD_LEFT);
-				$numbers[] = (int)trim($v->find('td',1)->find('em',0)->plaintext);
-				$numbers[] = (int)trim($v->find('td',1)->find('em',1)->plaintext);
-				$numbers[] = (int)trim($v->find('td',1)->find('em',2)->plaintext);
+					$numbers = array();
+					$qishu = explode('-',trim($v->find('td',0)->plaintext));
+					$data['qishu'] = '20'.$qishu[0].str_pad(intval($qishu[1]),3,'0',STR_PAD_LEFT);
+					$numbers[] = (int)trim($v->find('td',1)->find('em',0)->plaintext);
+					$numbers[] = (int)trim($v->find('td',1)->find('em',1)->plaintext);
+					$numbers[] = (int)trim($v->find('td',1)->find('em',2)->plaintext);
+				}
 			}
-		}
 
-		foreach ($numbers as $val) 
-		{
-			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
+			foreach ($numbers as $val) 
+			{
+				if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
+			}
+			
+			$data = $this->bc_ettm_record_db->fast3($numbers,$data);
+			return $this->_dispatch($play,$data);
+		} catch (Exception $e) {
+			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			log_message('error',$e->getMessage());
 		}
-		
-		$data = $this->bc_ettm_record_db->fast3($numbers,$data);
-		return $this->_dispatch($play,$data);
 	}
 
 	//快3
 	public function fast3_2($play)
 	{
-		$opts = array(
-			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
-			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
-		);
-		$context = stream_context_create($opts);
-		$url = '';
-		if ($play == 'gxk3') $url = '89';
-		if ($play == 'shk3') $url = '119';
-		if ($play == 'jsk3') $url = '86';
-		if ($url == '') return;
-		$dom = file_get_html("https://www.ydniu.com/open/$url.html",false,$context);
+		try {
+			$opts = array(
+				'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
+				"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
+			);
+			$context = stream_context_create($opts);
+			$url = '';
+			if ($play == 'gxk3') $url = '89';
+			if ($play == 'shk3') $url = '119';
+			if ($play == 'jsk3') $url = '86';
+			if ($url == '') return;
+			$dom = file_get_html("https://www.ydniu.com/open/$url.html",false,$context);
 
-		$data = $numbers = array();
-		$tr = $dom->find("table.gg_ls",0)->find("tr",1);
-		$qishu = str_replace('期','',trim($tr->find('td',0)->plaintext));
-		$data['qishu'] = substr($qishu,0,8).str_pad(substr($qishu,8),3,'0',STR_PAD_LEFT);
-		$numbers[] = (int)trim($tr->find('td',2)->find('li',0)->plaintext);
-		$numbers[] = (int)trim($tr->find('td',2)->find('li',1)->plaintext);
-		$numbers[] = (int)trim($tr->find('td',2)->find('li',2)->plaintext);
-		foreach ($numbers as $val) 
-		{
-			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
+			$data = $numbers = array();
+			$tr = $dom->find("table.gg_ls",0)->find("tr",1);
+			$qishu = str_replace('期','',trim($tr->find('td',0)->plaintext));
+			$data['qishu'] = substr($qishu,0,8).str_pad(substr($qishu,8),3,'0',STR_PAD_LEFT);
+			$numbers[] = (int)trim($tr->find('td',2)->find('li',0)->plaintext);
+			$numbers[] = (int)trim($tr->find('td',2)->find('li',1)->plaintext);
+			$numbers[] = (int)trim($tr->find('td',2)->find('li',2)->plaintext);
+			foreach ($numbers as $val) 
+			{
+				if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
+			}
+			
+			$data = $this->bc_ettm_record_db->fast3($numbers,$data);
+			return $this->_dispatch($play,$data);
+		} catch (Exception $e) {
+			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			log_message('error',$e->getMessage());
 		}
-		
-		$data = $this->bc_ettm_record_db->fast3($numbers,$data);
-		return $this->_dispatch($play,$data);
 	}
 
 	//新疆時時彩
 	public function xjssc()
 	{
-		$opts = array(
-			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
-			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
-		);
-		$context = stream_context_create($opts);
-		$dom = file_get_html("http://www.xjflcp.com/game/sscIndex",false,$context);
-		
-		$data = $numbers = array();
-		$div = $dom->find("div.con_left",1);
+		try {
+			$opts = array(
+				'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
+				"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
+			);
+			$context = stream_context_create($opts);
+			$dom = file_get_html("http://www.xjflcp.com/game/sscIndex",false,$context);
+			
+			$data = $numbers = array();
+			$div = $dom->find("div.con_left",1);
 
-		$data['qishu'] = trim($div->find('span',0)->plaintext);
-		$numbers[] = trim($div->find('i',0)->plaintext);
-		$numbers[] = trim($div->find('i',1)->plaintext);
-		$numbers[] = trim($div->find('i',2)->plaintext);
-		$numbers[] = trim($div->find('i',3)->plaintext);
-		$numbers[] = trim($div->find('i',4)->plaintext);
-		foreach ($numbers as $val) 
-		{
-			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
+			$data['qishu'] = trim($div->find('span',0)->plaintext);
+			$numbers[] = trim($div->find('i',0)->plaintext);
+			$numbers[] = trim($div->find('i',1)->plaintext);
+			$numbers[] = trim($div->find('i',2)->plaintext);
+			$numbers[] = trim($div->find('i',3)->plaintext);
+			$numbers[] = trim($div->find('i',4)->plaintext);
+			foreach ($numbers as $val) 
+			{
+				if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
+			}
+			$data = $this->bc_ettm_record_db->tat($numbers,$data);
+			$this->_dispatch('xjssc',$data);
+		} catch (Exception $e) {
+			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			log_message('error',$e->getMessage());
 		}
-		$data = $this->bc_ettm_record_db->tat($numbers,$data);
-		$this->_dispatch('xjssc',$data);
 	}
 
 	//時時彩-重慶+新疆
 	public function tat($play)
 	{
-		$opts = array(
-			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
-			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
-		);
-		$context = stream_context_create($opts);
-		$dom = file_get_html("http://www.ssztzzy.com/?c=record&a=game&lottery_type=$play",false,$context);
-		
-		$data = $numbers = array();
-		$div = $dom->find("div.ionic-scroll",0)->find("div.row",0);
+		try {
+			$opts = array(
+				'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
+				"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
+			);
+			$context = stream_context_create($opts);
+			$dom = file_get_html("http://www.ssztzzy.com/?c=record&a=game&lottery_type=$play",false,$context);
+			
+			$data = $numbers = array();
+			$div = $dom->find("div.ionic-scroll",0)->find("div.row",0);
 
-		$data['qishu'] = trim($div->find('div.cont',0)->find('div.ng-binding',0)->plaintext);
-		$numbers[] = trim($div->find('div.cont',1)->find('span',0)->plaintext);
-		$numbers[] = trim($div->find('div.cont',1)->find('span',1)->plaintext);
-		$numbers[] = trim($div->find('div.cont',1)->find('span',2)->plaintext);
-		$numbers[] = trim($div->find('div.cont',1)->find('span',3)->plaintext);
-		$numbers[] = trim($div->find('div.cont',1)->find('span',4)->plaintext);
-		foreach ($numbers as $val) 
-		{
-			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
+			$data['qishu'] = trim($div->find('div.cont',0)->find('div.ng-binding',0)->plaintext);
+			$numbers[] = trim($div->find('div.cont',1)->find('span',0)->plaintext);
+			$numbers[] = trim($div->find('div.cont',1)->find('span',1)->plaintext);
+			$numbers[] = trim($div->find('div.cont',1)->find('span',2)->plaintext);
+			$numbers[] = trim($div->find('div.cont',1)->find('span',3)->plaintext);
+			$numbers[] = trim($div->find('div.cont',1)->find('span',4)->plaintext);
+			foreach ($numbers as $val) 
+			{
+				if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
+			}
+
+			$data = $this->bc_ettm_record_db->tat($numbers,$data);
+			$this->_dispatch($play,$data);
+		} catch (Exception $e) {
+			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			log_message('error',$e->getMessage());
 		}
-
-		$data = $this->bc_ettm_record_db->tat($numbers,$data);
-		$this->_dispatch($play,$data);
 	}
 
 	//時時彩-天津
 	public function tat2($play)
 	{
-		$opts = array(
-			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
-			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
-		);
-		$context = stream_context_create($opts);
-		$dom = file_get_html("https://pub.icaile.com/$play",false,$context);
-		
-		$data = $numbers = array();
-		foreach (array('table1','table2','table3') as $table)
-		{
-			$tr = $dom->find("table.$table tr");
-			foreach ($tr as $k => $v)
+		try {
+			$opts = array(
+				'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
+				"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
+			);
+			$context = stream_context_create($opts);
+			$dom = file_get_html("https://pub.icaile.com/$play",false,$context);
+			
+			$data = $numbers = array();
+			foreach (array('table1','table2','table3') as $table)
 			{
-				if ($k == 0) continue;
-				if (count($v->find('td',1)->children()) < 5) break;
+				$tr = $dom->find("table.$table tr");
+				foreach ($tr as $k => $v)
+				{
+					if ($k == 0) continue;
+					if (count($v->find('td',1)->children()) < 5) break;
 
-				$numbers = array();
-				$qishu = explode('-',trim($v->find('td',0)->plaintext));
-				$data['qishu'] = '20'.$qishu[0].str_pad(intval($qishu[1]),($play == 'xjssc'?2:3),'0',STR_PAD_LEFT);
-				$numbers[] = (int)trim($v->find('td',1)->find('em',0)->plaintext);
-				$numbers[] = (int)trim($v->find('td',1)->find('em',1)->plaintext);
-				$numbers[] = (int)trim($v->find('td',1)->find('em',2)->plaintext);
-				$numbers[] = (int)trim($v->find('td',1)->find('em',3)->plaintext);
-				$numbers[] = (int)trim($v->find('td',1)->find('em',4)->plaintext);
+					$numbers = array();
+					$qishu = explode('-',trim($v->find('td',0)->plaintext));
+					$data['qishu'] = '20'.$qishu[0].str_pad(intval($qishu[1]),($play == 'xjssc'?2:3),'0',STR_PAD_LEFT);
+					$numbers[] = (int)trim($v->find('td',1)->find('em',0)->plaintext);
+					$numbers[] = (int)trim($v->find('td',1)->find('em',1)->plaintext);
+					$numbers[] = (int)trim($v->find('td',1)->find('em',2)->plaintext);
+					$numbers[] = (int)trim($v->find('td',1)->find('em',3)->plaintext);
+					$numbers[] = (int)trim($v->find('td',1)->find('em',4)->plaintext);
+				}
 			}
-		}
-		foreach ($numbers as $val) 
-		{
-			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
-		}
+			foreach ($numbers as $val) 
+			{
+				if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
+			}
 
-		$data = $this->bc_ettm_record_db->tat($numbers,$data);
-		$this->_dispatch($play,$data);
+			$data = $this->bc_ettm_record_db->tat($numbers,$data);
+			$this->_dispatch($play,$data);
+		} catch (Exception $e) {
+			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			log_message('error',$e->getMessage());
+		}
 	}
 
 	//11選5
 	public function select5($play)
 	{
-		$opts = array(
-			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
-			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
-		);
-		$context = stream_context_create($opts);
-		$dom = file_get_html("https://pub.icaile.com/$play",false,$context);
+		try {
+			$opts = array(
+				'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
+				"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
+			);
+			$context = stream_context_create($opts);
+			$dom = file_get_html("https://pub.icaile.com/$play",false,$context);
 
-		$data = $numbers = array();
-		foreach (array('table1','table2','table3') as $table)
-		{
-			$tr = $dom->find("table.$table tr");
-			foreach ($tr as $k => $v)
+			$data = $numbers = array();
+			foreach (array('table1','table2','table3') as $table)
 			{
-				if ($k == 0) continue;
-				if (count($v->find('td',1)->children()) < 5) break;
+				$tr = $dom->find("table.$table tr");
+				foreach ($tr as $k => $v)
+				{
+					if ($k == 0) continue;
+					if (count($v->find('td',1)->children()) < 5) break;
 
-				$numbers = array();
-				$qishu = explode('-',trim($v->find('td',0)->plaintext));
-				$data['qishu'] = '20'.$qishu[0].str_pad(intval($qishu[1]),3,'0',STR_PAD_LEFT);
-				$numbers[] = (int)trim($v->find('td',1)->find('em',0)->plaintext);
-				$numbers[] = (int)trim($v->find('td',1)->find('em',1)->plaintext);
-				$numbers[] = (int)trim($v->find('td',1)->find('em',2)->plaintext);
-				$numbers[] = (int)trim($v->find('td',1)->find('em',3)->plaintext);
-				$numbers[] = (int)trim($v->find('td',1)->find('em',4)->plaintext);
+					$numbers = array();
+					$qishu = explode('-',trim($v->find('td',0)->plaintext));
+					$data['qishu'] = '20'.$qishu[0].str_pad(intval($qishu[1]),3,'0',STR_PAD_LEFT);
+					$numbers[] = (int)trim($v->find('td',1)->find('em',0)->plaintext);
+					$numbers[] = (int)trim($v->find('td',1)->find('em',1)->plaintext);
+					$numbers[] = (int)trim($v->find('td',1)->find('em',2)->plaintext);
+					$numbers[] = (int)trim($v->find('td',1)->find('em',3)->plaintext);
+					$numbers[] = (int)trim($v->find('td',1)->find('em',4)->plaintext);
+				}
 			}
-		}
-		foreach ($numbers as $val) 
-		{
-			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
-		}
-		$data['numbers'] = implode(',',$numbers);
-		$data['status'] = 1;
+			foreach ($numbers as $val) 
+			{
+				if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
+			}
+			$data['numbers'] = implode(',',$numbers);
+			$data['status'] = 1;
 
-		return $this->_dispatch($play,$data);
+			return $this->_dispatch($play,$data);
+		} catch (Exception $e) {
+			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			log_message('error',$e->getMessage());
+		}
 	}
 
 	//11選5
 	public function select5_2($play)
 	{
-		$opts = array(
-			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
-			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
-		);
-		$context = stream_context_create($opts);
-		$url = '';
-		if ($play == 'gd11x5') $url = '78';
-		if ($play == 'jx11x5') $url = '70';
-		if ($play == 'sd11x5') $url = '62';
-		if ($url == '') return;
-		$dom = file_get_html("https://www.ydniu.com/open/$url.html",false,$context);
+		try {
+			$opts = array(
+				'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
+				"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
+			);
+			$context = stream_context_create($opts);
+			$url = '';
+			if ($play == 'gd11x5') $url = '78';
+			if ($play == 'jx11x5') $url = '70';
+			if ($play == 'sd11x5') $url = '62';
+			if ($url == '') return;
+			$dom = file_get_html("https://www.ydniu.com/open/$url.html",false,$context);
 
-		$data = $numbers = array();
-		$tr = $dom->find("table.gg_ls",0)->find("tr",1);
-		$qishu = str_replace('期','',trim($tr->find('td',0)->plaintext));
-		$data['qishu'] = substr($qishu,0,8).str_pad(substr($qishu,8),3,'0',STR_PAD_LEFT);
-		$numbers[] = (int)trim($tr->find('td',2)->find('li',0)->plaintext);
-		$numbers[] = (int)trim($tr->find('td',2)->find('li',1)->plaintext);
-		$numbers[] = (int)trim($tr->find('td',2)->find('li',2)->plaintext);
-		$numbers[] = (int)trim($tr->find('td',2)->find('li',3)->plaintext);
-		$numbers[] = (int)trim($tr->find('td',2)->find('li',4)->plaintext);
-		foreach ($numbers as $val) 
-		{
-			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
+			$data = $numbers = array();
+			$tr = $dom->find("table.gg_ls",0)->find("tr",1);
+			$qishu = str_replace('期','',trim($tr->find('td',0)->plaintext));
+			$data['qishu'] = substr($qishu,0,8).str_pad(substr($qishu,8),3,'0',STR_PAD_LEFT);
+			$numbers[] = (int)trim($tr->find('td',2)->find('li',0)->plaintext);
+			$numbers[] = (int)trim($tr->find('td',2)->find('li',1)->plaintext);
+			$numbers[] = (int)trim($tr->find('td',2)->find('li',2)->plaintext);
+			$numbers[] = (int)trim($tr->find('td',2)->find('li',3)->plaintext);
+			$numbers[] = (int)trim($tr->find('td',2)->find('li',4)->plaintext);
+			foreach ($numbers as $val) 
+			{
+				if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
+			}
+			$data['numbers'] = implode(',',$numbers);
+			$data['status'] = 1;
+			
+			return $this->_dispatch($play,$data);
+		} catch (Exception $e) {
+			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			log_message('error',$e->getMessage());
 		}
-		$data['numbers'] = implode(',',$numbers);
-		$data['status'] = 1;
-		
-		return $this->_dispatch($play,$data);
 	}
 
 	//PC28
 	public function pc28($play)
 	{
-		$opts = array(
-			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
-			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
-		);
-		$context = stream_context_create($opts);
-		$url = '';
-		if ($play == 'canadapc28') $url = 'dt_result_jnd';
-		if ($play == 'bjpc28') $url = 'dt_result';
-		if ($url == '') return false;
-		$dom = file_get_html("http://www.cx997.com/index.php?m=Home&c=WebPc&a=$url",false,$context);
+		try {
+			$opts = array(
+				'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
+				"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
+			);
+			$context = stream_context_create($opts);
+			$url = '';
+			if ($play == 'canadapc28') $url = 'dt_result_jnd';
+			if ($play == 'bjpc28') $url = 'dt_result';
+			if ($url == '') return false;
+			$dom = file_get_html("http://www.cx997.com/index.php?m=Home&c=WebPc&a=$url",false,$context);
 
-		$data = $numbers = array();
-		$data['qishu'] = trim($dom->find('span#pc_tt',0)->plaintext);
-		$numbers[] = trim($dom->find('div.ball',0)->plaintext);
-		$numbers[] = trim($dom->find('div.ball',1)->plaintext);
-		$numbers[] = trim($dom->find('div.ball',2)->plaintext);
-		foreach ($numbers as $val) 
-		{
-			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
+			$data = $numbers = array();
+			$data['qishu'] = trim($dom->find('span#pc_tt',0)->plaintext);
+			$numbers[] = trim($dom->find('div.ball',0)->plaintext);
+			$numbers[] = trim($dom->find('div.ball',1)->plaintext);
+			$numbers[] = trim($dom->find('div.ball',2)->plaintext);
+			foreach ($numbers as $val) 
+			{
+				if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
+			}
+			$data = $this->bc_ettm_record_db->pc28($numbers,$data);
+			return $this->_dispatch($play,$data);
+		} catch (Exception $e) {
+			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			log_message('error',$e->getMessage());
 		}
-		$data = $this->bc_ettm_record_db->pc28($numbers,$data);
-		$this->_dispatch($play,$data);
 	}
 
 	//PC28
 	public function pc28_2($play)
 	{
-		$opts = array(
-			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
-			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
-		);
-		$context = stream_context_create($opts);
-		$url = '';
-		if ($play == 'canadapc28') $url = 'jnd';
-		if ($play == 'bjpc28') $url = 'dan';
-		if ($url == '') return false;
-		$dom = file_get_html("https://www.99yuce.com/yuce/$url.html",false,$context);
+		try {
+			$opts = array(
+				'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
+				"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
+			);
+			$context = stream_context_create($opts);
+			$url = '';
+			if ($play == 'canadapc28') $url = 'jnd';
+			if ($play == 'bjpc28') $url = 'dan';
+			if ($url == '') return false;
+			$dom = file_get_html("https://www.99yuce.com/yuce/$url.html",false,$context);
 
-		$data = $numbers = array();
-		$tr = $dom->find('table#tbe tr',2);
-		$data['qishu'] = trim($tr->find('td',1)->plaintext);
-		$numbers[] = trim($tr->find('td',2)->find('span.rball',0)->plaintext);
-		$numbers[] = trim($tr->find('td',2)->find('span.rball',1)->plaintext);
-		$numbers[] = trim($tr->find('td',2)->find('span.rball',2)->plaintext);
-		foreach ($numbers as $val) 
-		{
-			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
+			$data = $numbers = array();
+			$tr = $dom->find('table#tbe tr',2);
+			$data['qishu'] = trim($tr->find('td',1)->plaintext);
+			$numbers[] = trim($tr->find('td',2)->find('span.rball',0)->plaintext);
+			$numbers[] = trim($tr->find('td',2)->find('span.rball',1)->plaintext);
+			$numbers[] = trim($tr->find('td',2)->find('span.rball',2)->plaintext);
+			foreach ($numbers as $val) 
+			{
+				if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
+			}
+			$data = $this->bc_ettm_record_db->pc28($numbers,$data);
+			return $this->_dispatch($play,$data);
+		} catch (Exception $e) {
+			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			log_message('error',$e->getMessage());
 		}
-		$data = $this->bc_ettm_record_db->pc28($numbers,$data);
-		$this->_dispatch($play,$data);
 	}
 	
 	//PK10 幸運飛艇
@@ -577,7 +632,7 @@ class Grab extends CI_Controller
 			}
 	
 			$data = $this->bc_ettm_record_db->pk10($numbers,$data);
-			$this->_dispatch($play,$data);
+			return $this->_dispatch($play,$data);
 		} catch (Exception $e) {
 			mqtt_publish("home/web/crawler/$play", $e->getMessage());
 			log_message('error',$e->getMessage());
@@ -615,7 +670,7 @@ class Grab extends CI_Controller
 			}
 
 			$data = $this->bc_ettm_record_db->pk10($numbers,$data);
-			$this->_dispatch($play,$data);
+			return $this->_dispatch($play,$data);
 		} catch (Exception $e) {
 			mqtt_publish("home/web/crawler/$play", $e->getMessage());
 			log_message('error',$e->getMessage());
@@ -625,73 +680,83 @@ class Grab extends CI_Controller
 	//排列3 福彩3D
 	public function lottery3($play)
 	{
-		$opts = array(
-			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
-			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
-		);
-		$context = stream_context_create($opts);
-		$url = $play;
-		if ($play == 'fc3d') $url = '3d';
-		if ($play == 'pl3') $url = 'p3p5';
-		$dom = file_get_html("http://www.china-lottery.net/$url",false,$context);
-		
-		$data['qishu'] = trim($dom->find('select#result_issue',0)->find('option',0)->plaintext);
-		$numbers[] = trim($dom->find('span#data_lottery_0',0)->plaintext);
-		$numbers[] = trim($dom->find('span#data_lottery_1',0)->plaintext);
-		$numbers[] = trim($dom->find('span#data_lottery_2',0)->plaintext);
-		$error = false;
-		foreach ($numbers as $val)
-		{
-			if (!is_numeric($val)) $error = true;
-		}
-		//如果號碼有問題 抓另一個網址
-		if ($error)
-		{
-			$numbers = array();
+		try {
+			$opts = array(
+				'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
+				"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
+			);
+			$context = stream_context_create($opts);
 			$url = $play;
 			if ($play == 'fc3d') $url = '3d';
-			$dom = file_get_html("http://caipiao.163.com/award/$url",false,$context);
+			if ($play == 'pl3') $url = 'p3p5';
+			$dom = file_get_html("http://www.china-lottery.net/$url",false,$context);
 			
-			$div = $dom->find("div.search_zj_left",0);
-			$data['qishu'] = ($play == 'pl3'?'20':'').trim($div->find('span',0)->plaintext);
-			$numbers[] = trim($div->find('p#zj_area',0)->find('span',0)->plaintext);
-			$numbers[] = trim($div->find('p#zj_area',0)->find('span',1)->plaintext);
-			$numbers[] = trim($div->find('p#zj_area',0)->find('span',2)->plaintext);
+			$data['qishu'] = trim($dom->find('select#result_issue',0)->find('option',0)->plaintext);
+			$numbers[] = trim($dom->find('span#data_lottery_0',0)->plaintext);
+			$numbers[] = trim($dom->find('span#data_lottery_1',0)->plaintext);
+			$numbers[] = trim($dom->find('span#data_lottery_2',0)->plaintext);
+			$error = false;
 			foreach ($numbers as $val)
 			{
-				if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
+				if (!is_numeric($val)) $error = true;
 			}
+			//如果號碼有問題 抓另一個網址
+			if ($error)
+			{
+				$numbers = array();
+				$url = $play;
+				if ($play == 'fc3d') $url = '3d';
+				$dom = file_get_html("http://caipiao.163.com/award/$url",false,$context);
+				
+				$div = $dom->find("div.search_zj_left",0);
+				$data['qishu'] = ($play == 'pl3'?'20':'').trim($div->find('span',0)->plaintext);
+				$numbers[] = trim($div->find('p#zj_area',0)->find('span',0)->plaintext);
+				$numbers[] = trim($div->find('p#zj_area',0)->find('span',1)->plaintext);
+				$numbers[] = trim($div->find('p#zj_area',0)->find('span',2)->plaintext);
+				foreach ($numbers as $val)
+				{
+					if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
+				}
+			}
+			
+			$data = $this->bc_ettm_record_db->lottery3($numbers,$data);
+			return $this->_dispatch($play,$data);
+		} catch (Exception $e) {
+			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			log_message('error',$e->getMessage());
 		}
-		
-		$data = $this->bc_ettm_record_db->lottery3($numbers,$data);
-		$this->_dispatch($play,$data);
 	}
 
 	//排列3 福彩3D
 	public function lottery3_2($play)
 	{
-		$opts = array(
-			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
-			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
-		);
-		$context = stream_context_create($opts);
-		$url = $play;
-		if ($play == 'fc3d') $url = 'sd';
-		if ($play == 'pl3') $url = 'pls';
-		$dom = file_get_html("https://kaijiang.500.com/$url.shtml",false,$context);
-		
-		$data['qishu'] = trim($dom->find('font.cfont2',0)->plaintext);
-		$numbers[] = trim($dom->find('div.ball_box01',0)->find('li.ball_orange',0)->plaintext);
-		$numbers[] = trim($dom->find('div.ball_box01',0)->find('li.ball_orange',1)->plaintext);
-		$numbers[] = trim($dom->find('div.ball_box01',0)->find('li.ball_orange',2)->plaintext);
-		$error = false;
-		foreach ($numbers as $val)
-		{
-			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
-		}
+		try {
+			$opts = array(
+				'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
+				"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
+			);
+			$context = stream_context_create($opts);
+			$url = $play;
+			if ($play == 'fc3d') $url = 'sd';
+			if ($play == 'pl3') $url = 'pls';
+			$dom = file_get_html("https://kaijiang.500.com/$url.shtml",false,$context);
+			
+			$data['qishu'] = trim($dom->find('font.cfont2',0)->plaintext);
+			$numbers[] = trim($dom->find('div.ball_box01',0)->find('li.ball_orange',0)->plaintext);
+			$numbers[] = trim($dom->find('div.ball_box01',0)->find('li.ball_orange',1)->plaintext);
+			$numbers[] = trim($dom->find('div.ball_box01',0)->find('li.ball_orange',2)->plaintext);
+			$error = false;
+			foreach ($numbers as $val)
+			{
+				if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
+			}
 
-		$data = $this->bc_ettm_record_db->lottery3($numbers,$data);
-		$this->_dispatch($play,$data);
+			$data = $this->bc_ettm_record_db->lottery3($numbers,$data);
+			return $this->_dispatch($play,$data);
+		} catch (Exception $e) {
+			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			log_message('error',$e->getMessage());
+		}
 	}
 
 	public function _dispatch($play,$data)
