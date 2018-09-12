@@ -223,7 +223,7 @@ class Grab extends CI_Controller
 			$data = $this->bc_ettm_record_db->happy10($numbers,$data);
 			return $this->_dispatch($play,$data);
 		} catch (Exception $e) {
-			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			mqtt_publish("home/web/crawler/$play", $e->getMessage(),1,1);
 			log_message('error',$e->getMessage());
 		}
 	}
@@ -262,7 +262,7 @@ class Grab extends CI_Controller
 			$data = $this->bc_ettm_record_db->happy10($numbers,$data);
 			return $this->_dispatch($play,$data);
 		} catch (Exception $e) {
-			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			mqtt_publish("home/web/crawler/$play", $e->getMessage(),1);
 			log_message('error',$e->getMessage());
 		}
 	}
@@ -304,7 +304,7 @@ class Grab extends CI_Controller
 			$data = $this->bc_ettm_record_db->fast3($numbers,$data);
 			return $this->_dispatch($play,$data);
 		} catch (Exception $e) {
-			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			mqtt_publish("home/web/crawler/$play", $e->getMessage(),1);
 			log_message('error',$e->getMessage());
 		}
 	}
@@ -340,7 +340,7 @@ class Grab extends CI_Controller
 			$data = $this->bc_ettm_record_db->fast3($numbers,$data);
 			return $this->_dispatch($play,$data);
 		} catch (Exception $e) {
-			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			mqtt_publish("home/web/crawler/$play", $e->getMessage(),1);
 			log_message('error',$e->getMessage());
 		}
 	}
@@ -372,7 +372,7 @@ class Grab extends CI_Controller
 			$data = $this->bc_ettm_record_db->tat($numbers,$data);
 			$this->_dispatch('xjssc',$data);
 		} catch (Exception $e) {
-			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			mqtt_publish("home/web/crawler/$play", $e->getMessage(),1);
 			log_message('error',$e->getMessage());
 		}
 	}
@@ -405,7 +405,7 @@ class Grab extends CI_Controller
 			$data = $this->bc_ettm_record_db->tat($numbers,$data);
 			$this->_dispatch($play,$data);
 		} catch (Exception $e) {
-			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			mqtt_publish("home/web/crawler/$play", $e->getMessage(),1);
 			log_message('error',$e->getMessage());
 		}
 	}
@@ -448,7 +448,7 @@ class Grab extends CI_Controller
 			$data = $this->bc_ettm_record_db->tat($numbers,$data);
 			$this->_dispatch($play,$data);
 		} catch (Exception $e) {
-			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			mqtt_publish("home/web/crawler/$play", $e->getMessage(),1);
 			log_message('error',$e->getMessage());
 		}
 	}
@@ -492,7 +492,7 @@ class Grab extends CI_Controller
 
 			return $this->_dispatch($play,$data);
 		} catch (Exception $e) {
-			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			mqtt_publish("home/web/crawler/$play", $e->getMessage(),1);
 			log_message('error',$e->getMessage());
 		}
 	}
@@ -531,7 +531,7 @@ class Grab extends CI_Controller
 			
 			return $this->_dispatch($play,$data);
 		} catch (Exception $e) {
-			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			mqtt_publish("home/web/crawler/$play", $e->getMessage(),1);
 			log_message('error',$e->getMessage());
 		}
 	}
@@ -563,7 +563,7 @@ class Grab extends CI_Controller
 			$data = $this->bc_ettm_record_db->pc28($numbers,$data);
 			return $this->_dispatch($play,$data);
 		} catch (Exception $e) {
-			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			mqtt_publish("home/web/crawler/$play", $e->getMessage(),1);
 			log_message('error',$e->getMessage());
 		}
 	}
@@ -596,7 +596,7 @@ class Grab extends CI_Controller
 			$data = $this->bc_ettm_record_db->pc28($numbers,$data);
 			return $this->_dispatch($play,$data);
 		} catch (Exception $e) {
-			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			mqtt_publish("home/web/crawler/$play", $e->getMessage(),1);
 			log_message('error',$e->getMessage());
 		}
 	}
@@ -634,7 +634,7 @@ class Grab extends CI_Controller
 			$data = $this->bc_ettm_record_db->pk10($numbers,$data);
 			return $this->_dispatch($play,$data);
 		} catch (Exception $e) {
-			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			mqtt_publish("home/web/crawler/$play", $e->getMessage(),1);
 			log_message('error',$e->getMessage());
 		}
 	}
@@ -672,7 +672,7 @@ class Grab extends CI_Controller
 			$data = $this->bc_ettm_record_db->pk10($numbers,$data);
 			return $this->_dispatch($play,$data);
 		} catch (Exception $e) {
-			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			mqtt_publish("home/web/crawler/$play", $e->getMessage(),1);
 			log_message('error',$e->getMessage());
 		}
 	}
@@ -722,7 +722,7 @@ class Grab extends CI_Controller
 			$data = $this->bc_ettm_record_db->lottery3($numbers,$data);
 			return $this->_dispatch($play,$data);
 		} catch (Exception $e) {
-			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			mqtt_publish("home/web/crawler/$play", $e->getMessage(),1);
 			log_message('error',$e->getMessage());
 		}
 	}
@@ -754,7 +754,7 @@ class Grab extends CI_Controller
 			$data = $this->bc_ettm_record_db->lottery3($numbers,$data);
 			return $this->_dispatch($play,$data);
 		} catch (Exception $e) {
-			mqtt_publish("home/web/crawler/$play", $e->getMessage());
+			mqtt_publish("home/web/crawler/$play", $e->getMessage(),1);
 			log_message('error',$e->getMessage());
 		}
 	}
