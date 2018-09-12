@@ -17,303 +17,167 @@ class Grab extends CI_Controller
 	{
 		$minute = (date('H') * 60) + date('i');
 		
-		try
+		//湖南快10 開獎時間:09:10~23:00 10分鐘開一次
+		if ($minute > 550 && $minute < 1390)
 		{
-			//湖南快10 開獎時間:09:10~23:00 10分鐘開一次
-			if ($minute > 550 && $minute < 1390)
+			$run = false;
+			$updatetime = $this->recordinfo_db->get_updatetime('hnkl10');
+			if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
 			{
-				$run = false;
-				$updatetime = $this->recordinfo_db->get_updatetime('hnkl10');
-				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
-				{
-					$run = $this->happy10('hnkl10');
-					if (!$run) $this->happy10_2('hnkl10');
-				}
+				$run = $this->happy10('hnkl10');
+				if (!$run) $this->happy10_2('hnkl10');
 			}
 		}
-		catch (Exception $e)
+		//天津快10 開獎時間:09:05~22:55 10分鐘開一次
+		if ($minute > 545 && $minute < 1385)
 		{
-			mqtt_publish("home/web/crawler", "hnkl10 Error! Message:".$e->getMessage());
-			log_message('error',$e->getMessage());
-		}
-		try
-		{
-			//天津快10 開獎時間:09:05~22:55 10分鐘開一次
-			if ($minute > 545 && $minute < 1385)
+			$updatetime = $this->recordinfo_db->get_updatetime('tjkl10');
+			if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
 			{
-				$updatetime = $this->recordinfo_db->get_updatetime('tjkl10');
-				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
-				{
-					$run = $this->happy10('tjkl10');
-					if (!$run) $this->happy10_2('tjkl10');
-				}
+				$run = $this->happy10('tjkl10');
+				if (!$run) $this->happy10_2('tjkl10');
 			}
-		}
-		catch (Exception $e)
-		{
-			mqtt_publish("home/web/crawler", "tjkl10 Error! Message:".$e->getMessage());
-			log_message('error',$e->getMessage());
 		}
 
-		try
+		//廣西快3 開獎時間:09:37~22:27 10分鐘開一次
+		if ($minute > 577 && $minute < 1357)
 		{
-			//廣西快3 開獎時間:09:37~22:27 10分鐘開一次
-			if ($minute > 577 && $minute < 1357)
+			$updatetime = $this->recordinfo_db->get_updatetime('gxk3');
+			if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
 			{
-				$updatetime = $this->recordinfo_db->get_updatetime('gxk3');
-				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
-				{
-					$run = $this->fast3('gxk3');
-					if (!$run) $this->fast3_2('gxk3');
-				}
+				$run = $this->fast3('gxk3');
+				if (!$run) $this->fast3_2('gxk3');
 			}
 		}
-		catch (Exception $e)
+		//上海快3 開獎時間:08:58~22:28 10分鐘開一次
+		if ($minute > 538 && $minute < 1358)
 		{
-			mqtt_publish("home/web/crawler", "gxk3 Error! Message:".$e->getMessage());
-			log_message('error',$e->getMessage());
-		}
-		try
-		{
-			//上海快3 開獎時間:08:58~22:28 10分鐘開一次
-			if ($minute > 538 && $minute < 1358)
+			$updatetime = $this->recordinfo_db->get_updatetime('shk3');
+			if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
 			{
-				$updatetime = $this->recordinfo_db->get_updatetime('shk3');
-				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
-				{
-					$run = $this->fast3('shk3');
-					if (!$run) $this->fast3_2('shk3');
-				}
+				$run = $this->fast3('shk3');
+				if (!$run) $this->fast3_2('shk3');
 			}
 		}
-		catch (Exception $e)
+		//江蘇快3 開獎時間:08:40~22:10 10分鐘開一次
+		if ($minute > 520 && $minute < 1340)
 		{
-			mqtt_publish("home/web/crawler", "shk3 Error! Message:".$e->getMessage());
-			log_message('error',$e->getMessage());
-		}
-		try
-		{
-			//江蘇快3 開獎時間:08:40~22:10 10分鐘開一次
-			if ($minute > 520 && $minute < 1340)
+			$updatetime = $this->recordinfo_db->get_updatetime('jsk3');
+			if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
 			{
-				$updatetime = $this->recordinfo_db->get_updatetime('jsk3');
-				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
-				{
-					$run = $this->fast3('jsk3');
-					if (!$run) $this->fast3_2('jsk3');
-				}
+				$run = $this->fast3('jsk3');
+				if (!$run) $this->fast3_2('jsk3');
 			}
-		}
-		catch (Exception $e)
-		{
-			mqtt_publish("home/web/crawler", "jsk3 Error! Message:".$e->getMessage());
-			log_message('error',$e->getMessage());
 		}
 		
-		try
+		//新疆時時彩 開獎時間:10:10~02:00 10分鐘開一次
+		if ($minute > 610 || $minute < 130)
 		{
-			//新疆時時彩 開獎時間:10:10~02:00 10分鐘開一次
-			if ($minute > 610 || $minute < 130)
-			{
-				$updatetime = $this->recordinfo_db->get_updatetime('xjssc');
-				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->xjssc();
-			}
+			$updatetime = $this->recordinfo_db->get_updatetime('xjssc');
+			if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->xjssc();
 		}
-		catch (Exception $e)
+		//重慶時時彩 開獎時間:白天10:00~22:00 10分鐘開一次 夜場22:00~01:55 5分鐘開一次
+		if ($minute > 600 || $minute < 125)
 		{
-			mqtt_publish("home/web/crawler", "xjssc Error! Message:".$e->getMessage());
-			log_message('error',$e->getMessage());
+			$updatetime = $this->recordinfo_db->get_updatetime('cqssc');
+			if (date('Y-m-d H:i:s',time()-3*60) >= $updatetime) $this->tat('cqssc');
 		}
-		try
+		//天津時時彩 開獎時間:09:10~23:00 10分鐘開一次
+		if ($minute > 550 && $minute < 1390)
 		{
-			//重慶時時彩 開獎時間:白天10:00~22:00 10分鐘開一次 夜場22:00~01:55 5分鐘開一次
-			if ($minute > 600 || $minute < 125)
-			{
-				$updatetime = $this->recordinfo_db->get_updatetime('cqssc');
-				if (date('Y-m-d H:i:s',time()-3*60) >= $updatetime) $this->tat('cqssc');
-			}
-		}
-		catch (Exception $e)
-		{
-			mqtt_publish("home/web/crawler", "cqssc Error! Message:".$e->getMessage());
-			log_message('error',$e->getMessage());
-		}
-		try
-		{
-			//天津時時彩 開獎時間:09:10~23:00 10分鐘開一次
-			if ($minute > 550 && $minute < 1390)
-			{
-				$updatetime = $this->recordinfo_db->get_updatetime('tjssc');
-				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->tat2('tjssc');
-			}
-		}
-		catch (Exception $e)
-		{
-			mqtt_publish("home/web/crawler", "tjssc Error! Message:".$e->getMessage());
-			log_message('error',$e->getMessage());
+			$updatetime = $this->recordinfo_db->get_updatetime('tjssc');
+			if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime) $this->tat2('tjssc');
 		}
 
-		try
+		//廣東11選5 開獎時間:09:10~23:00 10分鐘開一次
+		if ($minute > 550 && $minute < 1390)
 		{
-			//廣東11選5 開獎時間:09:10~23:00 10分鐘開一次
-			if ($minute > 550 && $minute < 1390)
+			$updatetime = $this->recordinfo_db->get_updatetime('gd11x5');
+			if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
 			{
-				$updatetime = $this->recordinfo_db->get_updatetime('gd11x5');
-				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
-				{
-					$run = $this->select5('gd11x5');
-					if (!$run) $this->select5_2('gd11x5');
-				}
+				$run = $this->select5('gd11x5');
+				if (!$run) $this->select5_2('gd11x5');
 			}
 		}
-		catch (Exception $e)
+		//江西11選5 開獎時間:09:10~23:00 10分鐘開一次
+		if ($minute > 550 && $minute < 1390)
 		{
-			mqtt_publish("home/web/crawler", "gd11x5 Error! Message:".$e->getMessage());
-			log_message('error',$e->getMessage());
-		}
-		try
-		{
-			//江西11選5 開獎時間:09:10~23:00 10分鐘開一次
-			if ($minute > 550 && $minute < 1390)
+			$updatetime = $this->recordinfo_db->get_updatetime('jx11x5');
+			if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
 			{
-				$updatetime = $this->recordinfo_db->get_updatetime('jx11x5');
-				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
-				{
-					$run = $this->select5('jx11x5');
-					if (!$run) $this->select5_2('jx11x5');
-				}
+				$run = $this->select5('jx11x5');
+				if (!$run) $this->select5_2('jx11x5');
 			}
 		}
-		catch (Exception $e)
+		//山東11選5 開獎時間:08:35~22:55 10分鐘開一次
+		if ($minute > 515 && $minute < 1385)
 		{
-			mqtt_publish("home/web/crawler", "jx11x5 Error! Message:".$e->getMessage());
-			log_message('error',$e->getMessage());
-		}
-		try
-		{
-			//山東11選5 開獎時間:08:35~22:55 10分鐘開一次
-			if ($minute > 515 && $minute < 1385)
+			$updatetime = $this->recordinfo_db->get_updatetime('sd11x5');
+			if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
 			{
-				$updatetime = $this->recordinfo_db->get_updatetime('sd11x5');
-				if (date('Y-m-d H:i:s',time()-8*60) >= $updatetime)
-				{
-					$run = $this->select5('sd11x5');
-					if (!$run) $this->select5_2('sd11x5');
-				}
+				$run = $this->select5('sd11x5');
+				if (!$run) $this->select5_2('sd11x5');
 			}
-		}
-		catch (Exception $e)
-		{
-			mqtt_publish("home/web/crawler", "sd11x5 Error! Message:".$e->getMessage());
-			log_message('error',$e->getMessage());
 		}
 		
-		try
+		//加拿大PC28 開獎時間: 210秒開一次
+		$updatetime = $this->recordinfo_db->get_updatetime('canadapc28');
+		if (date('Y-m-d H:i:s',time()-2*60) >= $updatetime)
 		{
-			//加拿大PC28 開獎時間: 210秒開一次
-			$updatetime = $this->recordinfo_db->get_updatetime('canadapc28');
+			$run = $this->pc28('canadapc28');
+			if (!$run) $this->pc28_2('canadapc28');
+		}
+		//北京PC28 開獎時間:09:05~23:55 5分鐘開一次
+		if ($minute > 545 || $minute < 5)
+		{
+			$updatetime = $this->recordinfo_db->get_updatetime('bjpc28');
+			if (date('Y-m-d H:i:s',time()-3*60) >= $updatetime)
+			{
+				$run = $this->pc28('bjpc28');
+				if (!$run) $this->pc28_2('bjpc28');
+			}
+		}
+
+		//幸運快艇 開獎時間:13:04~04:04 5分鐘開一次
+		if ($minute > 784 || $minute < 254)
+		{
+			$updatetime = $this->recordinfo_db->get_updatetime('xyft');
+			if (date('Y-m-d H:i:s',time()-3*60) >= $updatetime)
+			{
+				$run = $this->pk10('xyft');
+				if (!$run) $this->pk10_2('xyft');
+			}
+		}
+		//北京PK10 開獎時間:09:07~23:57 5分鐘開一次
+		if ($minute > 547 || $minute < 7)
+		{
+			$updatetime = $this->recordinfo_db->get_updatetime('bjpk10');
 			if (date('Y-m-d H:i:s',time()-2*60) >= $updatetime)
 			{
-				$run = $this->pc28('canadapc28');
-				if (!$run) $this->pc28_2('canadapc28');
+				$run = $this->pk10_2('bjpk10');
+				if (!$run) $this->pk10('bjpk10');
 			}
-		}
-		catch (Exception $e)
-		{
-			mqtt_publish("home/web/crawler", "canadapc28 Error! Message:".$e->getMessage());
-			log_message('error',$e->getMessage());
-		}
-		try
-		{
-			//北京PC28 開獎時間:09:05~23:55 5分鐘開一次
-			if ($minute > 545 || $minute < 5)
-			{
-				$updatetime = $this->recordinfo_db->get_updatetime('bjpc28');
-				if (date('Y-m-d H:i:s',time()-3*60) >= $updatetime)
-				{
-					$run = $this->pc28('bjpc28');
-					if (!$run) $this->pc28_2('bjpc28');
-				}
-			}
-		}
-		catch (Exception $e)
-		{
-			mqtt_publish("home/web/crawler", "bjpc28 Error! Message:".$e->getMessage());
-			log_message('error',$e->getMessage());
-		}
-		
-		try
-		{
-			//幸運快艇 開獎時間:13:04~04:04 5分鐘開一次
-			if ($minute > 784 || $minute < 254)
-			{
-				$updatetime = $this->recordinfo_db->get_updatetime('xyft');
-				if (date('Y-m-d H:i:s',time()-3*60) >= $updatetime)
-				{
-					$run = $this->pk10('xyft');
-					if (!$run) $this->pk10_2('xyft');
-				}
-			}
-		}
-		catch (Exception $e)
-		{
-			mqtt_publish("home/web/crawler", "xyft Error! Message:".$e->getMessage());
-			log_message('error',$e->getMessage());
-		}
-		try
-		{
-			//北京PK10 開獎時間:09:07~23:57 5分鐘開一次
-			if ($minute > 547 || $minute < 7)
-			{
-				$updatetime = $this->recordinfo_db->get_updatetime('bjpk10');
-				if (date('Y-m-d H:i:s',time()-2*60) >= $updatetime)
-				{
-					$run = $this->pk10('bjpk10');
-					if (!$run) $this->pk10_2('bjpk10');
-				}
-			}
-		}
-		catch (Exception $e)
-		{
-			mqtt_publish("home/web/crawler", "bjpk10 Error! Message:".$e->getMessage());
-			log_message('error',$e->getMessage());
 		}
 
-		try
+		//排列3 開獎時間: 20:30
+		if ($minute > 1230 && $minute < 1350)
 		{
-			//排列3 開獎時間: 20:30
-			if ($minute > 1230 && $minute < 1350)
+			$updatetime = $this->recordinfo_db->get_updatetime('pl3');
+			if (date('Y-m-d H:i:s',time()-120*60) >= $updatetime)
 			{
-				$updatetime = $this->recordinfo_db->get_updatetime('pl3');
-				if (date('Y-m-d H:i:s',time()-120*60) >= $updatetime)
-				{
-					$run = $this->lottery3('pl3');
-					if (!$run) $this->lottery3_2('pl3');
-				}
+				$run = $this->lottery3('pl3');
+				if (!$run) $this->lottery3_2('pl3');
 			}
 		}
-		catch (Exception $e)
+		//福彩3D 開獎時間: 21:15
+		if ($minute > 1275 && $minute < 1395)
 		{
-			mqtt_publish("home/web/crawler", "pl3 Error! Message:".$e->getMessage());
-			log_message('error',$e->getMessage());
-		}
-		try
-		{
-			//福彩3D 開獎時間: 21:15
-			if ($minute > 1275 && $minute < 1395)
+			$updatetime = $this->recordinfo_db->get_updatetime('fc3d');
+			if (date('Y-m-d H:i:s',time()-120*60) >= $updatetime)
 			{
-				$updatetime = $this->recordinfo_db->get_updatetime('fc3d');
-				if (date('Y-m-d H:i:s',time()-120*60) >= $updatetime)
-				{
-					$run = $this->lottery3('fc3d');
-					if (!$run) $this->lottery3_2('fc3d');
-				}
+				$run = $this->lottery3('fc3d');
+				if (!$run) $this->lottery3_2('fc3d');
 			}
-		}
-		catch (Exception $e)
-		{
-			mqtt_publish("home/web/crawler", "fc3d Error! Message:".$e->getMessage());
-			log_message('error',$e->getMessage());
 		}
 	}
 
@@ -788,8 +652,6 @@ class Grab extends CI_Controller
 				if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
 			}
 		}
-		$data['numbers'] = implode(',',$numbers);
-		$data['status'] = 1;
 		
 		$data = $this->bc_ettm_record_db->lottery3($numbers,$data);
 		$this->_dispatch($play,$data);
@@ -817,8 +679,6 @@ class Grab extends CI_Controller
 		{
 			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
 		}
-		$data['numbers'] = implode(',',$numbers);
-		$data['status'] = 1;
 
 		$data = $this->bc_ettm_record_db->lottery3($numbers,$data);
 		$this->_dispatch($play,$data);
@@ -837,6 +697,8 @@ class Grab extends CI_Controller
 			
 			//寫入最後開彩時間
 			$this->recordinfo_db->update_qishu($play,$data['qishu']);
+
+			mqtt_publish("home/web/crawler/$play", "成功寫入{$data['qishu']}期開獎號碼!");
 			
 			//派彩
 			$url = $this->config->item('lottery_domain')."index.php/rabbitMQ_c/RabbitMQ_open_numbers?key_word={$lottery['crontabs']}&qishu={$data['qishu']}";
