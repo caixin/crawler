@@ -285,7 +285,11 @@ class Grab extends CI_Controller
 			if ($minute > 1230 && $minute < 1350)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('pl3');
-				if (date('Y-m-d H:i:s',time()-120*60) >= $updatetime) $this->lottery3('pl3');
+				if (date('Y-m-d H:i:s',time()-120*60) >= $updatetime)
+				{
+					$run = $this->lottery3('pl3');
+					if (!$run) $this->lottery3_2('pl3');
+				}
 			}
 		}
 		catch (Exception $e)
@@ -299,7 +303,11 @@ class Grab extends CI_Controller
 			if ($minute > 1275 && $minute < 1395)
 			{
 				$updatetime = $this->recordinfo_db->get_updatetime('fc3d');
-				if (date('Y-m-d H:i:s',time()-120*60) >= $updatetime) $this->lottery3('fc3d');
+				if (date('Y-m-d H:i:s',time()-120*60) >= $updatetime)
+				{
+					$run = $this->lottery3('fc3d');
+					if (!$run) $this->lottery3_2('fc3d');
+				}
 			}
 		}
 		catch (Exception $e)
@@ -780,7 +788,38 @@ class Grab extends CI_Controller
 				if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
 			}
 		}
+		$data['numbers'] = implode(',',$numbers);
+		$data['status'] = 1;
 		
+		$data = $this->bc_ettm_record_db->lottery3($numbers,$data);
+		$this->_dispatch($play,$data);
+	}
+
+	//排列3 福彩3D
+	public function lottery3_2($play)
+	{
+		$opts = array(
+			'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
+			"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
+		);
+		$context = stream_context_create($opts);
+		$url = $play;
+		if ($play == 'fc3d') $url = 'sd';
+		if ($play == 'pl3') $url = 'pls';
+		$dom = file_get_html("https://kaijiang.500.com/$url.shtml",false,$context);
+		
+		$data['qishu'] = trim($dom->find('font.cfont2',0)->plaintext);
+		$numbers[] = trim($dom->find('div.ball_box01',0)->find('li.ball_orange',0)->plaintext);
+		$numbers[] = trim($dom->find('div.ball_box01',0)->find('li.ball_orange',1)->plaintext);
+		$numbers[] = trim($dom->find('div.ball_box01',0)->find('li.ball_orange',2)->plaintext);
+		$error = false;
+		foreach ($numbers as $val)
+		{
+			if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
+		}
+		$data['numbers'] = implode(',',$numbers);
+		$data['status'] = 1;
+
 		$data = $this->bc_ettm_record_db->lottery3($numbers,$data);
 		$this->_dispatch($play,$data);
 	}
