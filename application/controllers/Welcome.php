@@ -5,7 +5,7 @@ class Welcome extends CI_Controller
 	public function index($name='user1')
 	{
 		$data['name'] = $name;
-		echo 2; exit();
+		echo 3; exit();
 		$this->load->view('welcome_message',$data);
 	}
 }
