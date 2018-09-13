@@ -1,3 +1,3 @@
 <?php 
 
-exec('cd /home/spider/crawler && git pull');
+exec('cd /home/spider/crawler && git pull 2>&1');
