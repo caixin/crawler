@@ -16,3 +16,26 @@ if ( ! function_exists('aesgcm_encrypt'))
 		}
     }
 }
+
+if ( ! function_exists('procmsg'))
+{
+	function procmsg($topic,$msg)
+	{
+		if ($topic == 'home/lottery/SYNC')
+		{
+			$url = '';
+			switch ($msg)
+			{
+				case '': $url = ''; break;
+			}
+			//撈出營運商
+
+			//同步開獎號碼
+
+			//派彩
+		}
+		echo "Msg Recieved: " . date("r") . "\n";
+		echo "Topic: {$topic}\n\n";
+		echo "\t$msg\n\n";
+	}
+}
