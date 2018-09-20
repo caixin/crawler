@@ -75,7 +75,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '59.126.75.203',
+	'hostname' => '59.126.5.249',
 	'username' => 'root',
 	'password' => 'ShouldQuitLeeco"6869',
 	'database' => 'oa_project',
