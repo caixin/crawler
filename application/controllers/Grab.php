@@ -140,17 +140,6 @@ class Grab extends CI_Controller
 				if (!$run) $this->pc28_2('bjpc28');
 			}
 		}
-
-		//幸運快艇 開獎時間:13:04~04:04 5分鐘開一次
-		if ($minute > 784 || $minute < 254)
-		{
-			$updatetime = $this->recordinfo_db->get_updatetime('xyft');
-			if (date('Y-m-d H:i:s',time()-3*60) >= $updatetime)
-			{
-				$run = $this->pk10('xyft');
-				if (!$run) $this->pk10_2('xyft');
-			}
-		}
 		mqtt_publish("home/web/crawler/bjpk10",$minute);
 		//北京PK10 開獎時間:09:07~23:57 5分鐘開一次
 		if ($minute > 547 || $minute < 7)
@@ -163,6 +152,17 @@ class Grab extends CI_Controller
 				mqtt_publish("home/web/crawler/bjpk10",'running...');
 				$run = $this->apiplus('bjpk10');
 				if (!$run) $this->pk10('bjpk10');
+			}
+		}
+
+		//幸運快艇 開獎時間:13:04~04:04 5分鐘開一次
+		if ($minute > 784 || $minute < 254)
+		{
+			$updatetime = $this->recordinfo_db->get_updatetime('xyft');
+			if (date('Y-m-d H:i:s',time()-3*60) >= $updatetime)
+			{
+				$run = $this->pk10('xyft');
+				if (!$run) $this->pk10_2('xyft');
 			}
 		}
 
