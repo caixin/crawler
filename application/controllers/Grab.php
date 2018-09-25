@@ -121,11 +121,14 @@ class Grab extends CI_Controller
 		}
 		
 		//加拿大PC28 開獎時間: 210秒開一次
-		$updatetime = $this->recordinfo_db->get_updatetime('canadapc28');
-		if (date('Y-m-d H:i:s',time()-2*60) >= $updatetime)
+		if ($minute > 1200 || $minute < 1150)
 		{
-			$run = $this->pc28('canadapc28');
-			if (!$run) $this->pc28_2('canadapc28');
+			$updatetime = $this->recordinfo_db->get_updatetime('canadapc28');
+			if (date('Y-m-d H:i:s',time()-2*60) >= $updatetime)
+			{
+				$run = $this->pc28('canadapc28');
+				if (!$run) $this->pc28_2('canadapc28');
+			}
 		}
 		//北京PC28 開獎時間:09:05~23:55 5分鐘開一次
 		if ($minute > 545 || $minute < 5)
@@ -154,8 +157,8 @@ class Grab extends CI_Controller
 			$updatetime = $this->recordinfo_db->get_updatetime('bjpk10');
 			if (date('Y-m-d H:i:s',time()-2*60) >= $updatetime)
 			{
-				$run = $this->pk10('bjpk10');
-				if (!$run) $this->pk10_2('bjpk10');
+				$run = $this->apiplus('bjpk10');
+				//if (!$run) $this->pk10('bjpk10');
 			}
 		}
 
@@ -752,6 +755,31 @@ class Grab extends CI_Controller
 			}
 
 			$data = $this->bc_ettm_record_db->lottery3($numbers,$data);
+			return $this->_dispatch($play,$data);
+		} catch (Exception $e) {
+			mqtt_publish("home/web/crawler/$play", $e->getMessage(),1);
+			log_message('error',$e->getMessage());
+		}
+	}
+
+	//付費的
+	public function apiplus($play)
+	{
+		try {
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+			curl_setopt($ch, CURLOPT_URL, "http://c.apiplus.net/newly.do?token=t38bb62a47477cc44k&code={$play}&rows=1&format=json");
+			$result = curl_exec($ch);
+			curl_close($ch);
+
+			$lottery = json_decode($result,true);
+
+			$data['qishu'] = $lottery['data']['expect'];
+			$opencode = explode(',',$lottery['data']['opencode']);
+			$numbers = array();
+			foreach ($opencode as $val) $numbers[] = (int)$val;
+			
+			$data = $this->bc_ettm_record_db->pk10($numbers,$data);
 			return $this->_dispatch($play,$data);
 		} catch (Exception $e) {
 			mqtt_publish("home/web/crawler/$play", $e->getMessage(),1);
