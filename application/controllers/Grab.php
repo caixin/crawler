@@ -773,13 +773,12 @@ class Grab extends CI_Controller
 			curl_close($ch);
 
 			$lottery = json_decode($result,true);
-
-			$data['qishu'] = $lottery['data']['expect'];
-			$opencode = explode(',',$lottery['data']['opencode']);
+			$data['qishu'] = $lottery['data'][0]['expect'];
+			$opencode = explode(',',$lottery['data'][0]['opencode']);
 			$numbers = array();
 			foreach ($opencode as $val) $numbers[] = (int)$val;
 			
-			$data = $this->bc_ettm_record_db->pk10($numbers,$data);
+			$data = $this->bc_ettm_record_db->pk10($numbers,$data); print_r($data); exit();
 			return $this->_dispatch($play,$data);
 		} catch (Exception $e) {
 			mqtt_publish("home/web/crawler/$play", $e->getMessage(),1);
