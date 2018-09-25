@@ -155,10 +155,10 @@ class Grab extends CI_Controller
 		if ($minute > 547 || $minute < 7)
 		{
 			$updatetime = $this->recordinfo_db->get_updatetime('bjpk10');
-			if (date('Y-m-d H:i:s',time()-2*60) >= $updatetime)
+			if (date('Y-m-d H:i:s',time()-3*60) >= $updatetime)
 			{
 				$run = $this->apiplus('bjpk10');
-				//if (!$run) $this->pk10('bjpk10');
+				if (!$run) $this->pk10('bjpk10');
 			}
 		}
 
