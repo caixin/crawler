@@ -154,7 +154,9 @@ class Grab extends CI_Controller
 		//北京PK10 開獎時間:09:07~23:57 5分鐘開一次
 		if ($minute > 547 || $minute < 7)
 		{
+			mqtt_publish("home/web/crawler/bjpk10",$minute);
 			$updatetime = $this->recordinfo_db->get_updatetime('bjpk10');
+			mqtt_publish("home/web/crawler/bjpk10",date('Y-m-d H:i:s',time()-3*60).' - '.$updatetime);
 			if (date('Y-m-d H:i:s',time()-3*60) >= $updatetime)
 			{
 				mqtt_publish("home/web/crawler/bjpk10",'running...');
