@@ -158,7 +158,7 @@ class Grab extends CI_Controller
 			if (date('Y-m-d H:i:s',time()-3*60) >= $updatetime)
 			{
 				$run = $this->pk10('xyft');
-				if (!$run) $this->pk10_2('xyft');
+				//if (!$run) $this->pk10_2('xyft');
 			}
 		}
 
@@ -672,7 +672,7 @@ class Grab extends CI_Controller
 				if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
 			}
 
-			$data = $this->bc_ettm_record_db->pk10($numbers,$data);
+			$data = $this->bc_ettm_record_db->pk10($numbers,$data); print_r($data); exit();
 			return $this->_dispatch($play,$data);
 		} catch (Exception $e) {
 			mqtt_publish("home/web/crawler/$play", $e->getMessage(),1);
