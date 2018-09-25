@@ -151,6 +151,7 @@ class Grab extends CI_Controller
 				if (!$run) $this->pk10_2('xyft');
 			}
 		}
+		mqtt_publish("home/web/crawler/bjpk10",$minute);
 		//北京PK10 開獎時間:09:07~23:57 5分鐘開一次
 		if ($minute > 547 || $minute < 7)
 		{
