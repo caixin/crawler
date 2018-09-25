@@ -158,7 +158,7 @@ class Grab extends CI_Controller
 			if (date('Y-m-d H:i:s',time()-3*60) >= $updatetime)
 			{
 				$run = $this->pk10('xyft');
-				//if (!$run) $this->pk10_2('xyft');
+				if (!$run) $this->pk10_2('xyft');
 			}
 		}
 
@@ -603,9 +603,42 @@ class Grab extends CI_Controller
 			log_message('error',$e->getMessage());
 		}
 	}
-	
+
 	//PK10 幸運飛艇
 	public function pk10($play)
+	{
+		try {
+			$opts = array(
+				'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
+				"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
+			);
+			$context = stream_context_create($opts);
+			$url = $play == 'xyft' ? 'mlaft':$play;
+			$dom = file_get_html("http://359.com/{$url}/caipiao",false,$context);
+			
+			$tr = $dom->find("table#history tr",1);
+			$numbers = $data = array();
+			$data['qishu'] = trim($tr->find('td',0)->find('i',0)->plaintext);
+			for ($i=0;$i<10;$i++)
+			{
+				$numbers[] = (int)trim($tr->find('td',1)->find('span',$i)->plaintext);
+			}
+
+			foreach ($numbers as $val) 
+			{
+				if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
+			}
+
+			$data = $this->bc_ettm_record_db->pk10($numbers,$data);
+			return $this->_dispatch($play,$data);
+		} catch (Exception $e) {
+			mqtt_publish("home/web/crawler/$play", $e->getMessage(),1);
+			log_message('error',$e->getMessage());
+		}
+	}
+	
+	//PK10 幸運飛艇
+	public function pk10_2($play)
 	{
 		try {
 			$opts = array(
@@ -635,44 +668,6 @@ class Grab extends CI_Controller
 			}
 	
 			$data = $this->bc_ettm_record_db->pk10($numbers,$data);
-			return $this->_dispatch($play,$data);
-		} catch (Exception $e) {
-			mqtt_publish("home/web/crawler/$play", $e->getMessage(),1);
-			log_message('error',$e->getMessage());
-		}
-	}
-
-	//PK10 幸運飛艇
-	public function pk10_2($play)
-	{
-		try {
-			$opts = array(
-				'http' => array('header' => "User-Agent:MyAgent/1.0\r\n"),
-				"ssl" => array("verify_peer"=>false,"verify_peer_name"=>false)
-			);
-			$context = stream_context_create($opts);
-			$url = $play == 'bjpk10' ? '':$play;
-			$dom = file_get_html("https://www-k123456.com/list-kaijianglishi{$url}.html",false,$context);
-			
-			$tr = $dom->find("table.sub_table tr",1);
-			$numbers = $data = array();
-			$data['qishu'] = trim($tr->find('td',1)->plaintext);
-			$numbers[] = trim($tr->find('td',2)->find('span.ball_pks_',0)->plaintext);
-			$numbers[] = trim($tr->find('td',2)->find('span.ball_pks_',1)->plaintext);
-			$numbers[] = trim($tr->find('td',2)->find('span.ball_pks_',2)->plaintext);
-			$numbers[] = trim($tr->find('td',2)->find('span.ball_pks_',3)->plaintext);
-			$numbers[] = trim($tr->find('td',2)->find('span.ball_pks_',4)->plaintext);
-			$numbers[] = trim($tr->find('td',2)->find('span.ball_pks_',5)->plaintext);
-			$numbers[] = trim($tr->find('td',2)->find('span.ball_pks_',6)->plaintext);
-			$numbers[] = trim($tr->find('td',2)->find('span.ball_pks_',7)->plaintext);
-			$numbers[] = trim($tr->find('td',2)->find('span.ball_pks_',8)->plaintext);
-			$numbers[] = trim($tr->find('td',2)->find('span.ball_pks_',9)->plaintext);
-			foreach ($numbers as $val) 
-			{
-				if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
-			}
-
-			$data = $this->bc_ettm_record_db->pk10($numbers,$data); print_r($data); exit();
 			return $this->_dispatch($play,$data);
 		} catch (Exception $e) {
 			mqtt_publish("home/web/crawler/$play", $e->getMessage(),1);
