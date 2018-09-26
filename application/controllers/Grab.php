@@ -147,7 +147,7 @@ class Grab extends CI_Controller
 			if (date('Y-m-d H:i:s',time()-3*60) >= $updatetime)
 			{
 				$run = $this->apiplus('bjpk10');
-				//if (!$run) $this->pk10('bjpk10');
+				if (!$run) $this->pk10_3('bjpk10');
 			}
 		}
 
@@ -667,6 +667,39 @@ class Grab extends CI_Controller
 				if (!is_numeric($val)) { mqtt_publish("home/web/crawler", "{$play}抓的開獎數字出錯!"); return false; }
 			}
 	
+			$data = $this->bc_ettm_record_db->pk10($numbers,$data);
+			return $this->_dispatch($play,$data);
+		} catch (Exception $e) {
+			mqtt_publish("home/web/crawler/$play", $e->getMessage(),1);
+			log_message('error',$e->getMessage());
+		}
+	}
+	//PK10
+	public function pk10_3($play)
+	{
+		try {
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+			curl_setopt($ch, CURLOPT_URL, "https://api.api68.com/pks/getPksHistoryList.do?lotCode=10001");
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				"Host: api.api68.com",
+				"Connection: keep-alive",
+				"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+				"Upgrade-Insecure-Requests: 1",
+				"DNT:1",
+				"Accept-Language: zh-CN,zh;q=0.8,en-GB;q=0.6,en;q=0.4,en-US;q=0.2",
+			));
+			//https的設置
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+			$result = curl_exec($ch);
+			curl_close($ch);
+			$lottery = json_decode($result,true);
+			$data['qishu'] = $lottery['result']['data'][0]['preDrawIssue'];
+			$opencode = explode(',',$lottery['result']['data'][0]['preDrawCode']);
+			$numbers = array();
+			foreach ($opencode as $val) $numbers[] = (int)$val;
+			
 			$data = $this->bc_ettm_record_db->pk10($numbers,$data);
 			return $this->_dispatch($play,$data);
 		} catch (Exception $e) {
